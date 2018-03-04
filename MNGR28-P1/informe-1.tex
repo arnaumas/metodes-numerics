@@ -73,5 +73,7 @@ per \( x \neq 0 \). Si implementem això en codi ---tal i com es fa en els progr
 
 L'error que apareix en la primera implementació de \( f \) és un error de representació. Si calculem \( \cos{x_0} \) en precisió doble trobem que el resultat difereix de 1 a l'onzena xifra decimal. Quan representem aquest valor en precisió simple obtenim 1 degut a l'arrodoniment. Per tant obtenim 0 com a resultat de \( f(x_0) \) en precisió simple. En canvi, quan executem la segona implementació, el càlcul \( 2\sin{(x_{0}/2)}^2 \) retorna \( x_{0}^2/4 \) quan el representem en precisió simple, de manera que obtenim el resultat esperat. 
 
+\section*{Problema 3}
+
 
 \end{document}
