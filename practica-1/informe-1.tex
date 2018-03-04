@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+
+\usepackage[catalan]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Formatting options
+\usepackage[a4paper]{geometry}
+\usepackage[bf,sf]{titlesec} % Make the section titles bold and sans-serif
+\usepackage[font={footnotesize,sf}]{caption} % Make captions small and sans-serif
+
+\usepackage{amsmath,amssymb,siunitx}
+
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\yestag}{\refstepcounter{equation}\tag{\theequation}} 
+
+\title{\textsf{\textbf{Mètodes Numèrics \\ Pràctica 1:} Errors}}
+\author{\textsf{Raquel Garcia, Arnau Mas}}
+\date{\textsf{12 de Març 2018}}
+
+\begin{document}
+\maketitle
+
+\section*{Problema 1}
+Considerem la funció
+\begin{equation*}
+	f(x) = 
+	\begin{cases}
+		\dfrac{1 - \cos{x}}{x^2} & \text{si } x = 0 \\
+		\dfrac{1}{2} & \text{si } x \neq 0
+	\end{cases}
+\end{equation*}
+
+Primer observem que \( f \) està definida i és continua a tot \( \R \). Això és clar per \( x \leq 0 \). I per \( x = 0 \) fem servir que \( \cos{x} \sim 1 - \frac{1}{2} x^2 \) quan \( x \to 0 \). I per tant 
+\begin{equation*}
+	\lim_{x \to 0}{\dfrac{1 - \cos{x}}{x^2}} = \dfrac{1}{2}.
+\end{equation*}
+
+Hem de comprovar que per tot \( x \in \R^{\times} \) es compleix \( 0 \leq f(x) < \frac{1}{2} \).
+Veure que \( f \) és positiva a tot arreu és senzill tenint en compte que per tot \( x \in \R \) es té \( 1 - \cos{x} \geq 1 - 1 = 0 \) i que \( x^2 \geq 0 \) per \( x \in \R \). Per veure la fita superior procedim en dues parts.	Primer observem que per tot \( x \in \R^{\times} \) es té
+\begin{equation*}
+	\dfrac{1 - \cos{x}}{x^2} \leq \abs{\dfrac{1 - \cos{x}}{x^2}} < \dfrac{1 + \abs{\cos{x}}}{x^2} < \dfrac{2}{x^2}.
+\end{equation*}
+Ara bé, aquesta fita només ens és útil per \( \abs{x} > 2 \) ja que aleshores es té
+\begin{equation*}
+	\dfrac{1 - \cos{x}}{x^2} < \dfrac{2}{2^2} = \dfrac{1}{2}
+\end{equation*}
+ja que \( \frac{1}{x^2} \) és estrictament decreixent per \( x > 0 \) estrictament creixent per \( x < 0 \). Per demostrar la fita prop del zero farem ús del teorema de Taylor amb la forma de Lagrange per l'error. Primer trobem una desigualtat equivalent a la desigualtat que volem veure:
+\begin{align*}
+\dfrac{1 - \cos{x}}{x^2} < \dfrac{1}{2} & \iff -\cos{x} < \dfrac{1}{2}x^2 - 1 \\
+& \iff \cos{x} > 1 - \dfrac{1}{2}x^2. \label{eq:desigualtat equivalent} \tag{$\ast$}
+\end{align*}
+El desenvolupament de Taylor fins a ordre 2 de \( \cos{x} \) al voltant de 0 és \( 1 - \frac{x^2}{2} \). Si considerem \( x \in [-2,2] \) el teorema de Taylor ens garanteix que existeix \( 0 < a < x \) o \( x < a < 0 \) segons si \( x > 0 \) o \( x < 0 \) tal que 
+\begin{equation*}
+\cos{x} = 1 - \dfrac{1}{2}x^2 + \dfrac{\sin{a}}{3!} x^3.
+\end{equation*}
+Si substituïm a (\ref{eq:desigualtat equivalent}) trobem que hem de veure que 
+\begin{equation*}
+\dfrac{\sin{a}}{3!}x^3 > 0 
+\end{equation*}
+per \( x \in [-2,2] \). Si \( x >0 \) tenim que \( a < x < 2 \). Com que \( 0 < 2 < \pi \) tenim \( \sin{a} > 0 \) i tenim la desigualtat que volem ja que \( x^3 > 0 \) si \( x > 0 \). En canvi, si \( x < 0 \) tenim \( x^3 < 0 \). Però en aquest cas \( -2 < x < a < 0 \). I per tant, com que ara \( -\pi < a < 0 \) es compleix que \( \sin{a} < 0 \) i per tant també tenim la desigualtat que voliem.
+
+Els programes \texttt{funcio\_fl.c} i \texttt{funcio\_do.c} calculen \( f \) amb precisió simple i doble respectivament. Si avaluem al punt indicat, \( x_0 = \num{1.2e-5} \) trobem que el programa amb precisó simple retorna 0 fins a 8 xifres, mentre que el programa amb precisió doble retorna un valor molt proper a \( \frac{1}{2} \), concretament \num{0.4999997}, arrodonint fins a 7 xifres decimals. Ja hem observat que \( f \) és continua ---i de fet de classe \( \mathcal{C}^{\infty} \)---, per tant, com que \( x_0 \) és proper a 0, és raonable pensar que \( f(x_0) \) hauria de ser molt proper a \( \frac{1}{2} \). Això és el que ens dóna el programa en precisió doble. 
+
+Si fem servir que \( 1 - \cos{x} = 2 \sin{(x/2)}^2 \) podem reescriure \( f \) com
+\begin{equation*}
+	f(x) = \dfrac{2\sin{(x/2)^2}}{x^2}
+\end{equation*}
+per \( x \neq 0 \). Si implementem això en codi ---tal i com es fa en els programes \texttt{prob1c\_fl.c} i \texttt{prob1c\_do.c}--- veiem que ara obtenim el resultat correcte tant en precisió doble com en simple.
+
+L'error que apareix en la primera implementació de \( f \) és un error de representació. Si calculem \( \cos{x_0} \) en precisió doble trobem que el resultat difereix de 1 a l'onzena xifra decimal. Quan representem aquest valor en precisió simple obtenim 1 degut a l'arrodoniment. Per tant obtenim 0 com a resultat de \( f(x_0) \) en precisió simple. En canvi, quan executem la segona implementació, el càlcul \( 2\sin{(x_{0}/2)}^2 \) retorna \( x_{0}^2/4 \) quan el representem en precisió simple, de manera que obtenim el resultat esperat. 
+
+
+\end{document}
