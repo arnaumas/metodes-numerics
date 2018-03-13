@@ -4,9 +4,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-
+\renewcommand{\arraystretch}{1.7}
 % Formatting options
-\usepackage[a4paper]{geometry}
+\usepackage[a4paper, textheight = 23cm]{geometry}
 \usepackage[bf,sf]{titlesec} % Make the section titles bold and sans-serif
 \usepackage[font={footnotesize,sf}]{caption} % Make captions small and sans-serif
 
@@ -14,27 +14,27 @@
 
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
 
-\newcommand{\yestag}{\refstepcounter{equation}\tag{\theequation}} 
+\newcommand{\yestag}{\refstepcounter{equation}\tag{\theequation}}
 
 \title{\textsf{\textbf{Mètodes Numèrics \\ Pràctica 1:} Errors}}
-\author{\textsf{Raquel Garcia, Arnau Mas}}
-\date{\textsf{12 de Març 2018}}
+\author{\textsf{Raquel García, Arnau Mas}}
+\date{\textsf{11 de Març 2018}}
 
 \begin{document}
 \maketitle
-
 \section*{Problema 1}
 Considerem la funció
 \begin{equation*}
-	f(x) = 
+	f(x) =
 	\begin{cases}
 		\dfrac{1 - \cos{x}}{x^2} & \text{si } x = 0 \\
 		\dfrac{1}{2} & \text{si } x \neq 0
 	\end{cases}
 \end{equation*}
 
-Primer observem que \( f \) està definida i és continua a tot \( \R \). Això és clar per \( x \leq 0 \). I per \( x = 0 \) fem servir que \( \cos{x} \sim 1 - \frac{1}{2} x^2 \) quan \( x \to 0 \). I per tant 
+Primer observem que \( f \) està definida i és continua a tot \( \R \). Això és clar per \( x \neq 0 \). I per \( x = 0 \) fem servir que \( \cos{x} \sim 1 - \frac{1}{2} x^2 \) quan \( x \to 0 \). I per tant
 \begin{equation*}
 	\lim_{x \to 0}{\dfrac{1 - \cos{x}}{x^2}} = \dfrac{1}{2}.
 \end{equation*}
@@ -48,22 +48,22 @@ Ara bé, aquesta fita només ens és útil per \( \abs{x} > 2 \) ja que aleshore
 \begin{equation*}
 	\dfrac{1 - \cos{x}}{x^2} < \dfrac{2}{2^2} = \dfrac{1}{2}
 \end{equation*}
-ja que \( \frac{1}{x^2} \) és estrictament decreixent per \( x > 0 \) estrictament creixent per \( x < 0 \). Per demostrar la fita prop del zero farem ús del teorema de Taylor amb la forma de Lagrange per l'error. Primer trobem una desigualtat equivalent a la desigualtat que volem veure:
+ja que \( \frac{1}{x^2} \) és estrictament decreixent per \( x > 0 \) i estrictament creixent per \( x < 0 \). Per demostrar la fita prop del zero farem ús del teorema de Taylor amb la forma de Lagrange per l'error. Primer trobem una desigualtat equivalent a la desigualtat que volem veure:
 \begin{align*}
-\dfrac{1 - \cos{x}}{x^2} < \dfrac{1}{2} & \iff -\cos{x} < \dfrac{1}{2}x^2 - 1 \\
-& \iff \cos{x} > 1 - \dfrac{1}{2}x^2. \label{eq:desigualtat equivalent} \tag{$\ast$}
+	\dfrac{1 - \cos{x}}{x^2} < \dfrac{1}{2} & \iff -\cos{x} < \dfrac{1}{2}x^2 - 1 \\
+																					& \iff \cos{x} > 1 - \dfrac{1}{2}x^2. \label{eq:desigualtat equivalent} \tag{$\ast$}
 \end{align*}
-El desenvolupament de Taylor fins a ordre 2 de \( \cos{x} \) al voltant de 0 és \( 1 - \frac{x^2}{2} \). Si considerem \( x \in [-2,2] \) el teorema de Taylor ens garanteix que existeix \( 0 < a < x \) o \( x < a < 0 \) segons si \( x > 0 \) o \( x < 0 \) tal que 
+El desenvolupament de Taylor fins a ordre 2 de \( \cos{x} \) al voltant de 0 és \( 1 - \frac{x^2}{2} \). Si considerem \( x \in [-2,2] \) el teorema de Taylor ens garanteix que existeix \( 0 < a < x \) o \( x < a < 0 \) segons si \( x > 0 \) o \( x < 0 \) tal que
 \begin{equation*}
-\cos{x} = 1 - \dfrac{1}{2}x^2 + \dfrac{\sin{a}}{3!} x^3.
+	\cos{x} = 1 - \dfrac{1}{2}x^2 + \dfrac{\sin{a}}{3!} x^3.
 \end{equation*}
-Si substituïm a (\ref{eq:desigualtat equivalent}) trobem que hem de veure que 
+Si substituïm a (\ref{eq:desigualtat equivalent}) trobem que hem de veure que
 \begin{equation*}
-\dfrac{\sin{a}}{3!}x^3 > 0 
+	\dfrac{\sin{a}}{3!}x^3 > 0
 \end{equation*}
 per \( x \in [-2,2] \). Si \( x >0 \) tenim que \( a < x < 2 \). Com que \( 0 < 2 < \pi \) tenim \( \sin{a} > 0 \) i tenim la desigualtat que volem ja que \( x^3 > 0 \) si \( x > 0 \). En canvi, si \( x < 0 \) tenim \( x^3 < 0 \). Però en aquest cas \( -2 < x < a < 0 \). I per tant, com que ara \( -\pi < a < 0 \) es compleix que \( \sin{a} < 0 \) i per tant també tenim la desigualtat que voliem.
 
-Els programes \texttt{funcio\_fl.c} i \texttt{funcio\_do.c} calculen \( f \) amb precisió simple i doble respectivament. Si avaluem al punt indicat, \( x_0 = \num{1.2e-5} \) trobem que el programa amb precisó simple retorna 0 fins a 8 xifres, mentre que el programa amb precisió doble retorna un valor molt proper a \( \frac{1}{2} \), concretament \num{0.4999997}, arrodonint fins a 7 xifres decimals. Ja hem observat que \( f \) és continua ---i de fet de classe \( \mathcal{C}^{\infty} \)---, per tant, com que \( x_0 \) és proper a 0, és raonable pensar que \( f(x_0) \) hauria de ser molt proper a \( \frac{1}{2} \). Això és el que ens dóna el programa en precisió doble. 
+Els programes \texttt{prob1b\_fl.c} i \texttt{prob1b\_do.c} calculen \( f \) amb precisió simple i doble respectivament. Si avaluem al punt indicat, \( x_0 = \num{1.2e-5} \) trobem que el programa amb precisó simple retorna 0 fins a 8 xifres, mentre que el programa amb precisió doble retorna un valor molt proper a \( \frac{1}{2} \), concretament \num{0.4999997}, arrodonint fins a 7 xifres decimals. Ja hem observat que \( f \) és continua ---i de fet de classe \( \mathcal{C}^{\infty} \)---, per tant, com que \( x_0 \) és proper a 0, és raonable pensar que \( f(x_0) \) hauria de ser molt proper a \( \frac{1}{2} \). Això és el que ens dóna el programa en precisió doble.
 
 Si fem servir que \( 1 - \cos{x} = 2 \sin{(x/2)}^2 \) podem reescriure \( f \) com
 \begin{equation*}
@@ -71,9 +71,164 @@ Si fem servir que \( 1 - \cos{x} = 2 \sin{(x/2)}^2 \) podem reescriure \( f \) c
 \end{equation*}
 per \( x \neq 0 \). Si implementem això en codi ---tal i com es fa en els programes \texttt{prob1c\_fl.c} i \texttt{prob1c\_do.c}--- veiem que ara obtenim el resultat correcte tant en precisió doble com en simple.
 
-L'error que apareix en la primera implementació de \( f \) és un error de representació. Si calculem \( \cos{x_0} \) en precisió doble trobem que el resultat difereix de 1 a l'onzena xifra decimal. Quan representem aquest valor en precisió simple obtenim 1 degut a l'arrodoniment. Per tant obtenim 0 com a resultat de \( f(x_0) \) en precisió simple. En canvi, quan executem la segona implementació, el càlcul \( 2\sin{(x_{0}/2)}^2 \) retorna \( x_{0}^2/4 \) quan el representem en precisió simple, de manera que obtenim el resultat esperat. 
+L'error que apareix en la primera implementació de \( f \) és un error de representació. Si calculem \( \cos{x_0} \) en precisió doble trobem que el resultat difereix de 1 a l'onzena xifra decimal. Quan representem aquest valor en precisió simple obtenim 1 degut a l'arrodoniment. Per tant obtenim 0 com a resultat de \( f(x_0) \) en precisió simple. En canvi, quan executem la segona implementació, el càlcul \( 2\sin{(x_{0}/2)}^2 \) retorna \( x_{0}^2/4 \) quan el representem en precisió simple, de manera que obtenim el resultat esperat.
+
+
+
+
+
+\newpage
+\section*{Problema 2}
+Considerem l'equació quadràtica
+\begin{equation*}
+	ax^2+bx+c=0\quad\quad a\neq0
+\end{equation*}
+que té per arrels
+\begin{equation*}
+	x_1=\frac{-b+ \sqrt{b^2-4ac}}{2a}\quad \text{i}\quad x_2=\frac{-b- \sqrt{b^2-4ac}}{2a}
+\end{equation*}
+Suposem que $a>0$ i $b^2>4ac$, per tant hi ha dues arrels diferents i són reals.
+
+Volem demostrar que quan fem el càlcul numèric alguna de les arrels estarà contaminada per error de cancelació si $b^2\gg4ac$. En aquest cas:
+\begin{equation}\label{eq:b}
+	\sqrt{b^2-4ac}\approx \abs{b} 
+\end{equation}
+
+Si $b>0$ aleshores \( \abs{b} = b \) i podem veure que l'arrel que patirà cancelació serà $x_1$, ja que si considerem la suma del numerador $-b+\sqrt{b^2-4ac}$ i calculem la propagació de la fita de l'error relatiu procedent de la representació en punt flotant i de les operacions prèvies:
+\begin{align*}
+	\varepsilon_r(-b+\sqrt{b^2-4ac})=\left|\frac{-b}{-b+\sqrt{b^2-4ac}} \right| \varepsilon_r(-b)+\left|\frac{\sqrt{b^2-4ac}}{-b+\sqrt{b^2-4ac}} \right| \varepsilon_r(\sqrt{b^2-4ac})
+\end{align*}
+veiem que el denominador dels coeficients de propagació tendeix a zero:
+\begin{equation*}
+	-b + \sqrt{b^2 - 4ac} \approx -b + b \to 0
+\end{equation*}
+per \eqref{eq:b}, i com que el numerador està fitat per $b>0$, aleshores l'error relatiu es dispara, és a dir, hi haurà cancelació. També observem que el càlcul de $x_2$ serà segur, ja que els coeficients de propagació de l'error relatiu a l'efectuar la suma del numerador estaran fitats per $1/2$:
+\begin{equation*}
+  \frac{|b|}{|-b-\sqrt{b^2-4ac}|}\leq\frac{|b|}{|-2b|}=\frac{1}{2}.
+\end{equation*}
+
+Si $b<0$ tindrem \( \abs{b} = -b \), i pel mateix raonament l'arrel que ara patirà cancelació serà $x_2$, i calcular $x_1$ serà segur.
+
+Per a pensar una manera alternativa de calcular les arrels evitant l'error de cancelació, podem tenir en compte que tot polinomi $ax^2+bx+c$ amb arrels $x_1$ i $x_2$ es pot escriure de la següent manera:
+\begin{equation}\label{eq:factor}
+  a(x-x_1)(x-x_2)=ax^2-a(x_1+x_2)x+ax_1x_2
+\end{equation}
+i per tant $b=-a(x_1+x_2)$ i $c=ax_1x_2$. Ja hem vist que tant si $b>0$ com $b<0$, és possible calcular $x_2$ o $x_1$ de manera segura respectivament. Per tant en cada cas podem avaluar una de les arrels amb la fórmula estàndard obtenint un resultat prou exacte. Per a calcular l'arrel que patiria cancelació, considerant \eqref{eq:factor} veiem que coneixent l'arrel segura podem trobar l'altra fent:
+\begin{equation*}
+	x_1=\frac{c}{ax_2}\quad \text{o} \quad x_2=\frac{c}{ax_1}
+\end{equation*}
+segons sigui $x_2$ ó $x_1$ l'arrel segura, ja que el càlcul de productes i divisions és segur des del punt de vista numèric.
+
+Els programes \texttt{prob2a\_fl.c} i \texttt{prob2a\_do.c} avaluen les arrels amb la fórmula estàndard amb precisió simple i doble respectivament. I els programes \texttt{prob2b\_fl.c} i \texttt{prob2b\_do.c} les evaluen amb el procediment descrit anteriorment amb precisió simple i doble respectivament.
+
+
+Considerem el següent polinomi
+\begin{equation*}
+	x^2- (10^5 + 10^{-5})x +1=(x-10^5)(x-10^{-5}),
+\end{equation*}
+que sabem que té per arrels $x_1=10^5$ i $x_2=10^{-5}$. El programa \texttt{prob2a\_fl.c} ens retorna $x_1=10^5$ i $x_2=0$. Veiem, doncs, que l'arrel segura $x_1$ s'ha calculat correctament, però que al càlcul $x_2$ hi ha hagut una cancelació. El programa \texttt{prob2a\_do.c} ens retorna $x_1=10^5$ i $x_2=10^{-5}$, que és el resultat correcte. Per tant el càlcul amb la fórmula només s'ha vist afectat per cancelació en precisió simple. Els programes \texttt{prob2b\_fl.c} i \texttt{prob2b\_do.c} ens retornen ambdós $x_1=10^5$ i $x_2=10^{-5}$, per tant amb aquest mètode s'elimina l'error de cancelació tant en precisió simple com en doble.
+
+Considerem ara el següent polinomi:
+\begin{equation*}
+	x^2 + (\num{3e8} + \num{2e-8})x + 6 = (x + \num{3e8})(x + \num{2e-8})
+\end{equation*}
+que sabem que té per arrels $x_1=\num{-2e-8}$ i $x_2=\num{-3e8}$. Els programes \texttt{prob2b\_do.c} i \texttt{prob2b\_fl.c} retornen ambdós el resultat correcte. En canvi el programa \texttt{prob2a\_do.c} retorna $x_1=\num{-2.98e-8}$ i $x_2=\num{-3e8}$, i el programa \texttt{prob2a\_fl.c} retorna $x_1=\num{2.5466198e-1}$ i $x_2=\num{-3e8}$. Per tant observem que amb la fórmula de les arrels per a polinomis de segon grau, el càlcul de l'arrel no segura és totalment erroni en precisió simple, i també apareixen errors en precisió doble, deguts a la pèrdua de xifres significatives.
+\newpage
 
 \section*{Problema 3}
+El programa \texttt{prob3.c} conté funcions que calculen la variança d'una mostra en un i en dos bucles, en precisió simple i doble. Els programes \texttt{prob3a1\_fl.c} i \texttt{prob3a1\_do.c} fan servir les funcions de \texttt{prob3.c} per llegir dades d'un fitxer i calcular-ne la variança mostral en un sol bucle, en precisió simple i doble respectivament. Els programes \texttt{prob3a2\_fl.c} i \texttt{prob3a2\_do.c} fan el mateix però fent servir dos bucles. Si executem cada un d'aquests quatre programes passant com a mostra \( (\num{10000}, \num{10001}, \num{10002}) \) trobem que tots els programes calculen correctament la variança com a 1, tret de \texttt{prob3a1\_fl.c}, que dóna el resultat com a 0.
 
+Si fem un anàlisi més acurat de com s'està fent el càlcul amb un sol bucle descobrim que hi ha un error de cancelació. Si, per \( i \leq n \) posem \( x_i = x + \delta_i \) amb \( \abs{\delta_i} < \delta \) tenim que la mitjana dels \( x_i \) és de l'ordre de \( x \) i per tant \( x_i - \bar{x} \) és de l'ordre de \( \delta \). Així, donada la definició de la variança, \( s_n^2 \).
+\begin{equation}
+	s_n^2 = \dfrac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2,
+\end{equation}
+trobem que és de l'ordre de \( \delta^2 \). Si en canvi fem el càlcul amb un sol bucle, és a dir, fent servir la següent expressió equivalent per a la variància:
+\begin{equation}
+	s_n^2 = \dfrac{1}{n-1} \sum_{i=1}^n x_i^2 - \dfrac{1}{n(n-1)}\left(\sum_{i=1}^n x_i\right)^2 \label{eq:variança dolenta}
+\end{equation}
+observem que tant el primer terme com el segon terme són de l'ordre de \( x^2 \). Posem que \( x \sim 10^{k} \) i \( \delta \sim 10^{-l} \). Aleshores estem dient que els dos termes de (\ref{eq:variança dolenta}) són d'ordre \( 10^{2k} \) i que la seva diferència és d'ordre \( 10^{-2l} \), per tant han de coincidir en les \( 2(k+l) \) primeres xifres. Si aquest nombre de xifres és més gran que el nombre de xifres que tenim disponible en la precisió que estiguem treballant, aleshores el resultat que obtinguem fent el càlcul amb un bucle distarà del resultat correcte.
+
+Si estem treballant en precisió simple tenim 7 xifres significatives disponibles. Per tant, si \( 2(k+l) > 7 \) hauriem d'observar cancelació fent el càlcul amb un sol bucle. Per a comprovar això, el programa \texttt{prob3c.c} genera una llista de \( n \) nombres que no disten més de \( \delta \) d'un nombre donat \( x \). És a dir, genera \( n \) nombres uniformement distribuïts a l'interval \( [x - \delta, x + \delta] \). Si triem \( x = 10^3 \) i \( n = 500 \) aleshores amb \( \delta = 10^{-1} \) ja hauriem de veure cancelació en precisió simple. I en efecte, el resultat del càlcul és aproximadament \num{-0.45}, valor que no té sentit. Això és perque hem perdut totes les xifres significatives. Si \( \delta = 5 \) aleshores obtenim un resultat que discrepa del resultat correcte en un 10\%, mentre que amb \( \delta = 10 \), la discrepància és d'un 2\%.
+
+Per observar cancelació en precisió doble hem de tenir \( 2(k+l) > 15 \) ja que en precisió doble tenim 15 xifres significatives. Si \( x = 1000 \), \( n = 500 \) i \( \delta = 10^{-5} \) ja tenim cancelació i el càlcul amb un sol bucle ens dóna un resultat negatiu. Si \( \delta = 10^{-4} \) hi ha una discrepància del 16\% respecte el valor correcte, mentre que si \( \delta = 10^{-3} \), aquesta discrepància passa a ser del \num{0.3}\%.
+
+\newpage
+\section*{Problema 4}
+Considerem la sèrie
+\begin{equation*}
+	S=\sum_{i=1}^{\infty}\frac{1}{i^2}=\frac{\pi^2}{6}\approx\num{1.644934066848226}
+\end{equation*}
+Els programes \texttt{prob4a\_fl.c} i \texttt{prob4a\_do.c} calculen la suma dels termes de la sèrie fins al terme especificat en ordre decreixent, és a dir:
+\begin{equation*}
+	S_n=\left( ...\left( \left( \left( 1+\frac{1}{2^2}\right) +\frac{1}{3^2}\right) +...\right) +\frac{1}{(n-1)^2}\right) +\frac{1}{n^2}
+\end{equation*}
+en precisió simple i doble respectivament. En canvi els programes \texttt{prob4b\_fl.c} i \texttt{prob4b\_do.c} calculen les sumes parcials en ordre creixent, és a dir:
+\begin{equation*}
+	S_n=1+\left( \frac{1}{2^2} +\left( \frac{1}{3^2} +\left(  ...+\left(\frac{1}{(n-1)^2} + \frac{1}{n^2} \right)...\right)
+	\right) \right)
+\end{equation*}
+en precisió simple i doble respectivament.
+
+La següent taula presenta les discrepàncies entre el valor de la sèrie $S$ i les sumes parcials fins al terme \( n \)-èssim, calculades amb cadascun dels programes:
+\begin{center}
+	\begin{tabular}{c|c|c|c|c}
+
+		\( n \)&\texttt{prob4a\_fl.c}&\texttt{prob4a\_do.c}&\texttt{prob4b\_fl.c}&\texttt{prob4b\_do.c}\\
+		\hline
+		\hline
+		$10^5 $&$2.0874\cdot10^{-4}$&$9.9999499841\cdot10^{-6}$&$1.002\cdot10^{-5}$&$9.9999500001\cdot10^{-6}$\\
+		\hline
+		$10^6 $&$2.0874\cdot10^{-4}$&$9.999994564\cdot10^{-7}$&$1.08\cdot10^{-6}$&$9.999995001\cdot10^{-7}$\\
+		\hline
+		$10^7 $&$2.0874\cdot10^{-4}$&$1.000009668\cdot10^{-7}$&$1.3\cdot10^{-7}$&$9.99999950\cdot10^{-8}$\\
+		\hline
+		$10^8 $&$2.0874\cdot10^{-4}$&$9.0136514\cdot10^{-9}$&$1\cdot10^{-8}$&$9.9999999\cdot10^{-9}$\\
+		\hline
+		$10^9 $&$2.0874\cdot10^{-4}$&$9.0136514\cdot10^{-9}$&$1\cdot10^{-8}$&$1.0000001\cdot10^{-9}$\\
+		\hline
+	\end{tabular}
+\end{center}
+Observem que el resultat de \texttt{prob4a\_fl.c} no millora tot i afegir termes ---de fet deixa de canviar a partir del terme \num{e4}---. I el mateix succeeix amb \texttt{prob4a\_do.c} a partir del terme $10^8$. En canvi els resultats dels programes \texttt{prob4b\_fl.c} i \texttt{prob4b\_do.c} si que van millorant com més termes anem sumant. 
+
+La causa dels estancaments dels programes que sumen en ordre decreixent és el nombre limitat de xifres significatives en la representació en punt flotant. En precisió simple hi ha 7 xifres significatives disponibles. El terme \( 10^4 \) de la sèrie contribueix \( 10^{-8} \). Com que \( S \) és almenys 1, la diferència de xifres significatives és 8 i per tant els termes següents ja no contribueixen. En precisió doble tenim 15 xifres significatives, de manera que l'estancament té lloc a partir del terme \( 10^8 \), que contribueix \num{e-16}.
+
+Els programes \texttt{prob4d1\_fl.c} i \texttt{prob4d2\_fl.c} proporcionen maneres alternatives de realitzar la suma de termes de $S$. No s'aconsegueix millorar el resultat que proporciona sumar en ordre creixent, però sí que s'aconsegueix que la precisió en el resultat sigui independent de l'ordre de suma.
+
+El programa \texttt{prob4d1\_fl.c} agrupa els termes de la sèrie segons el seu ordre de magnitud en binari. Aleshores suma cada un d'aquests conjunts i finalment suma el resultat de cada un d'aquests conjunts. En detall, primer agrupa els termes en \( N \) conjunts \( S_k \) 
+\begin{equation*}
+	A_k = \left\{i \in \N \; \big\vert \; \frac{1}{2^{k+1}}\leq\frac{1}{i^2}<\frac{1}{2^k} \right\}.
+\end{equation*}
+Seguidament realitza les sumes
+\begin{equation*}
+	S_k = \sum_{i \in A_k} \dfrac{1}{i^2}
+\end{equation*}
+i acaba fent la suma
+\begin{equation}
+	S \approx \sum_{i = 1}^N S_k. \label{eq:suma final}
+\end{equation}
+D'aquesta manera, la suma final a (\ref{eq:suma final}), tot i ser en ordre decreixent\footnote{Si suméssim de més petit a més gran, aquest algoritme en realitat estaria fent el mateix que fa \texttt{prob4b\_fl.c} però de manera més complicada} no es veu tant afectada per la pèrdua de precisió ja que consta de menys termes i amb diferències menors entre ells.
+
+El programa \texttt{prob4d2\_fl.c} utilitza l'algoritme de suma de Kahan, que és capaç de recuperar l'error comés al sumar cada terme, i el té en compte al sumar el terme següent ---per a més detalls veure l'arxiu del programa---, aconseguint d'aquesta manera compensar l'error.
+
+En la taula següent es mostren les discrepàncies dels resultats d'aquests dos programes respecte al valor exacte:
+\begin{center}
+	\begin{tabular}{c|c|c}
+
+		\( n \)&\texttt{prob4d1\_fl.c}&\texttt{prob4d2\_do.c}\\
+		\hline
+		\hline
+		$10^5 $&$1.014\cdot10^{-5}$&$1.002\cdot10^{-5}$\\
+		\hline
+		$10^6 $&$1.08\cdot10^{-6}$&$9.6\cdot10^{-7}$\\
+		\hline
+		$10^7 $&$2.5\cdot10^{-7}$&$1.3\cdot10^{-7}$\\
+		\hline
+		$10^8 $&$2.5\cdot10^{-7}$&$1\cdot10^{-8}$\\
+		\hline
+	\end{tabular}
+\end{center}
+Observem que amb \texttt{prob4d1\_fl.c} tot i sumar en ordre decreixent, sumar els termes de magnitud similar de manera intermitja contribueix a alentir l'estancament del resultat: ara s'estanca partir de $10^7$ termes, en comptes de $10^4$.
+
+Per un altra banda, \texttt{prob4d2\_fl.c} ens dóna el mateix resultat que sumant en ordre creixent, tot i que la suma l'hem fet en ordre decreixent. Per tant l'algoritme de suma de Kahan ha compensat eficientment els errors comesos sense necessitat d'alterar l'ordre de sumació. 
 
 \end{document}

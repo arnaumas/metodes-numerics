@@ -1,0 +1,23 @@
+Per compilar cada programa només cal executar 'make <Nom del programa>'. També es pot executar 'make all' per compilar tots els programes alhora.
+
+Els noms dels programes són
+Apartat (a):
+ * prob3a1_fl : Càlcul de la variància amb un bucle en precisió simple
+ * prob3a1_do : Càlcul de la variància amb un bucle en precisió doble
+ * prob3a1_fl : Càlcul de la variància amb dos bucles en precisió simple
+ * prob3a1_do : Càlcul de la variància amb dos bucles en precisió doble
+Apartat (c):
+ * prob3c : Generador de nombres aleatoris
+
+Per executar qualsevol dels programes de l'apartat (a) cal donar com a paràmetre el nom d'un fitxer que contingui una llista de nombres. El fitxer 'dades_3b.dat' conté les dades que es proposen a l'apartat (b), i es pot executar fent
+ > ./prob3a2_fl dades.dat
+ >> La variança del conjunt de dades és: 1.00000000
+
+L'execució del generador de nombres aleatoris es com segueix:
+ > ./prob3c
+ >> Introduïu el nombre central: x 
+ >> Introduïu la diferència entre les dades: d
+ >> Introduïu el nombre de dades a generar: n
+i el resultat serà una llista de n nombres uniformement distribuïts en l'interval [x - d, x + d] que es volca en el fitxer 'dades_3c.dat'.
+
+Es pot executar 'make clean' per eliminar els codis objecte i 'make realclean' per eliminar també els executables.

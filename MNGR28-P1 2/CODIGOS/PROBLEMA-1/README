@@ -2,7 +2,7 @@ Per compilar cada programa només cal executar 'make <Nom del programa>'. També
 
 Els programes de l'apartat 1(b) són 'prob1b_fl' i 'prob1b_do', en precisió simple i doble respectivament. Els de l'apartat 1(c) són 'prob1c_fl' i 'prob1c_do', en precisió simple i doble respectivament.
 
-Si es vol calcular f(0.003) amb el mètode de l'apartat c en precisió doble, per exemple, només cal executar
+Per executar, si es vol calcular f(0.003) amb el mètode de l'apartat c en precisió doble, per exemple, només cal executar
  > make prob1c_do
  > ./prob1c_do 0.003
  >> f(0.003) = 0.499999999994000

@@ -1,0 +1,11 @@
+Per compilar cada programa només cal executar 'make <Nom del programa>'. També es pot executar 'make all' per compilar tots els programes alhora.
+
+Els programes que calculen les arrels utilitzant la fórmula per a polinomis de segon grau són 'prob2a_fl' i 'prob2a_do', en precisió simple i doble respectivament. Els que utilitzen el métode alternatiu són 'prob2b_fl' i 'prob2b_do', en precisió simple i doble respectivament.
+
+Si es volen calcular les arrels del polinomi x^2 - 5x + 6 amb el mètode alternatiu en precisió doble, per exemple, només cal executar
+ > make prob2b_do
+ > ./prob2b_do 1 -5 6
+ >> x1 = 3.000000
+ >> x2 = 2.000000
+
+Es pot executar 'make clean' per eliminar els codis objecte i 'make realclean' per eliminar també els executables.

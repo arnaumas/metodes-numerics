@@ -1,0 +1,9 @@
+Per compilar cada programa només cal executar 'make <Nom del programa>'. També es pot executar 'make all' per compilar tots els programes alhora.
+
+Els programes que calculen la suma dels termes de S en ordre decreixent són 'prob4a_fl' i 'prob4a_do', en precisió simple i doble respectivament. Els que calculen la suma en ordre creixent són 'prob4b_fl' i 'prob4b_do', en precisió simple i doble respectivament. Els programes que utilitzen un mètode alternatiu per a calcular la suma són 'prob4d1_fl', fent sumes parcials, i 'prob4d2_fl', amb Kahan.
+
+Si volem calcular la suma dels 10000 primers termes de S en ordre creixent en precisió doble, per exemple, només cal executar
+ > make prob4b_do
+ > ./prob4b_do 10000
+ >> S_10000 = 1.6448340718480596
+ >> Discrepància = 0.0000999950001668
