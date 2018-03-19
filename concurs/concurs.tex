@@ -1,0 +1,69 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{header}
+
+\usepackage{mathdots}
+
+\title{\textsf{\textbf{Un ànalisi de la convergència de l'exponeciació recursiva}}}
+\author{\textsf{Arnau Mas}}
+\date{\textsf{19 de Març de 2018}}
+
+\begin{document}
+\maketitle
+
+Considerem la següent expressió:
+\begin{equation*}
+z^{z^{z^{z^{\iddots}}}}
+\end{equation*}
+Si volem entendre'n el comportament, el primer pas necessari és establir de forma precisa sobre què estem parlant. Una manera natural és definir una successió \( \left(z_n\right) \) com
+\begin{equation*} \label{eq:def recursiva}
+	\begin{aligned}
+		z_0 &= z \in \R^+\\
+		z_{n+1} &= z^{z_n}.
+	\end{aligned}
+\end{equation*}
+Observem que si considerem la funció exponencial definida a \( \R \), \( f(x) = z^x \) aleshores \( z_{n+1} = f(z_n) \). Per tant, si la successió \( z_n \) convergeix haurà de convergir a un punt fix de \( f \). Així doncs,trobant per a quines bases l'exponencial té algun punt fix podrem establir quan la successió \emph{no} convergeix. 
+
+Si \( f(x) = z^x \) té un punt fix, posem \( c \in \R \) podem dir dues coses. Primer, que \( c > 0 \) ja que l'exponencial és sempre estrictament positiva en qualsevol base. En segon lloc tenim
+\begin{equation*}
+	z^c = c \iff z = c^{1/c}.
+\end{equation*}
+És a dir, que una exponencial té un punt fix si i només si la seva base és de la forma \( c^{1/c} \) per \( c \in \R^+ \). Resulta, però, que la funció \( g(x) = x^{1/x} \) està fitada. Efectivament, tenim
+\begin{equation*} \label{eq:x a la 1/x}
+x^{1/x} = e^{\frac{\log{x}}{x}}
+\end{equation*}
+i \( (\log{x})/x \to 0 \) quan \( x \to \infty \) i \( (\log{x})/x \to -\infty \) quan \( x \to 0 \). Per tant, com que l'exponencial és continua, tenim
+\begin{gather*}
+x^{1/x} \xrightarrow{ x \to \infty } 1 \\
+x^{1/x} \xrightarrow{ x \to 0 } 0
+\end{gather*}
+Una funció continua en un interval obert amb límits finits als seus extrems és fitada. Podriem derivar \( g \) per trobar-ne els màxims locals, però com que el logaritme és creixent, podem derivar \( \log{g} \):
+\begin{align*}
+	\frac{d}{dx}\left(\log{g(x)}\right) = \frac{d}{dx}\left(\frac{\log{x}}{x}\right) = \frac{1 - \log{x}}{x^2}
+\end{align*}
+La derivada només s'anul·la a \( x = e \). Tenim \( g(e) = e^{1/e} > 1 \) per tant \( x^{1/x} \) té per màxim global \( e^{1/e} \). Això ens diu que l'exponencial en base \( z \) no té punts fixos per \( z > e^{1/e} \), i per tant que \( \left(z_n\right) \) no pot convergir en aquest cas.  
+
+Donat que acabem de provar que tota exponencial amb base \( z \in (0, e^{1/e}] \) té almenys un punt fix, podem assegurar que la successió d'iterats sempre convergirà en aquest rang? Sabem que si una funció \( f \) té un punt fix \( c \), aleshores la successió \( \left(f^n(x_0)\right) \) convergeix a \( c \) quan \( \abs{f'(c)} < 1 \), és a dir, quan \( c \) sigui un punt fix atractor. Així, si \( f(x) = z^x \), l'exponenciació iterada en base \( z = c^{1/c} \) convergirà quan 
+\begin{equation*}
+	\abs{f'(c)} = \abs{\log{(z)}z^c} = \abs{\log{c^{1/c}}c} = \abs{\log{c}} < 1
+\end{equation*}
+i per tant quan \( c \in (e^{-1}, e) \). És a dir, \( z \in (e^{-e}, e^{1/e}) \). Per \( z < e^{-e} \) tindrem que \( c < e^{-1} \) i que \( \log{c} < -1 \) i per tant que \( c \) és un punt fix repulsor. En aquest cas, la successió d'iterats no convergirà a \( c \) i per tant no serà convergent. 
+
+Ens queda només establir el comportament dels iterats quan \( z = e^{-e} \) i quan \( z = e^{1/e} \). Per el segon cas, demostrarem que els iterats són creixents i estant fitats per \( e \). Primer observem que \( e \) és l'únic punt fix de \( e^{x/e} \) ja que \( x^{1/x} \) assoleix el seu únic màxim global per \( x = e \) per tant no hi ha \( c \neq e \) tal que \( c^{1/c} = e^{1/e} \). I com que \( (e^{1/e})^0 > 0 \) i que per \( x \) prou gran tota exponencial és més gran que \( x \) ha de ser que \( e^{x/e} \geq x \) per tot \( x \), per Bolzano. En particular
+\begin{equation*}
+z_{n+1} = e^{z_{n}/e} \geq z_{n}.
+\end{equation*}
+Veiem per inducció que \( z_n < e \) per tot \( n \in \N \). Com que \( 1/e < 1 \), és clar que \( z_0 = e^{1/e} < e \). I tenim \( z_{n+1} = e^{z_n / e} < e^{e/e} = e \) fent servir l'hipotesi d'inducció. Per tant la successió d'iterats és creixent i està fitada per \( e \) per sobre, per tant convergeix. En particular convergeix a \( e \) ja que \( e \) és l'únicp unt fix. 
+
+Veure que el cas \( z = e^{-e} \) també dóna lloc a una successió convergent és una mica més complicat ja que la successió no és monòtona. Ara bé, es pot demostrar de manera similar al cas anterior, que la parcial \( z_{2k} \) dels termes parells és creixent i fitada per damunt per \( 1/e \), mentre que la parcial dels senars, \( z_{2k + 1} \), és decreixent i fitada per avall per \( 1/e \), i per tant que tota la successió és convergent.
+
+Així doncs, concloem que l'exponenciació iterada serà convergent si i només si la base estigui a l'interval \( [e^{-e}, e^{1/e}] \), i que convergirà al punt fix de l'exponencial, \( c \) amb \( \abs{\log{c}} < 1 \). Si \( z \leq 1 \) o \( z = e^{1/e} \) aleshores hi ha un únic punt fix, mentre que si \( 1 < z < e^{1/e} \) n'hi ha dos, però només un que sigui atractor. Per trobar el punt fix, es pot fer servir la funció \( W \) de Lambert. Aquesta funció compleix que 
+\begin{equation*}
+	W(y)e^{W(y)} = y
+\end{equation*}
+per \( y \in \mathbb{C} \). Per tant
+\begin{equation*}
+	z^{-\frac{W(-\log{z})}{\log{z}}} = e^{-W(-\log{z})} = -\frac{W(-\log{z})}{\log{z}}
+\end{equation*}
+i \( -\frac{W(-\log{z})}{\log{z}} \) és un punt fix de \( z^x \), i per tant a on convergeix l'exponenciació iterada. Es pot demostrar que \( -\frac{W(-\log{z})}{\log{z}} \) és real precisament per \( z \in [e^{-e}, e^{1/e} \), com era d'esperar pel que acabem de demostrar. 
+
+\end{document}
