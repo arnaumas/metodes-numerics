@@ -1,0 +1,108 @@
+\documentclass[12pt]{article}
+
+\usepackage[catalan]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,total={6.2in,9.3in}]{geometry}
+% Formatting options
+\usepackage[bf,sf]{titlesec} % Make the section titles bold and sans-serif
+\usepackage[font={footnotesize,sf}]{caption} % Make captions small and sans-serif
+\renewcommand{\arraystretch}{1.7}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\yestag}{\refstepcounter{equation}\tag{\theequation}}
+
+\title{\textsf{\textbf{Mètodes Numèrics \\ Pràctica 2:} Zeros de funcions}}
+\author{\textsf{Raquel Garcia, Arnau Mas}}
+\date{\textsf{11 de Març 2018}}
+
+\begin{document}
+	\maketitle
+	\section*{Problema 1}
+	
+	Considerem l'equació polinòmica:
+	\begin{equation}\label{pol:1}
+		x^3=x+40
+	\end{equation}
+	utilitzant les fórmules de Cardano trobem l'arrel $\alpha$ que ve donada per:
+	\begin{equation}\label{alfa}
+		\alpha=\left(20+\frac{1}{9}\sqrt{32397} \right)^{1/3}+\left(20-\frac{1}{9}\sqrt{32397} \right)^{1/3}
+	\end{equation}
+	Tot i que ens dóna l'arrel exacta, aquesta expressió no és bona des del punt de vista numèric, ja que al segon terme hi ha una resta que produeix cancelació. El programa \texttt{prob1a.c} avalua aquesta expressió en doble i en simple precisió. En precisió doble obtenim $\alpha=3.517393514052852$ i en precisió simple $\alpha=3.51738477$, mentre que el resultat exacte amb 15 decimals és $\alpha=3.517393514052818$. Per tant en precisió doble, l'error relatiu que s'ha produït ha sigut $\varepsilon_d=9.67\times10^{-15}$, i en simple $\varepsilon_s=2.51\times10^{-6}$. Ara aplicarem la fórmula de propagació de l'error relatiu al segon terme de \eqref{alfa} (sense l'arrel cúbica) per a tractar d'estimar aquest error:
+	\begin{equation}\label{errorrelatiu1}
+		\varepsilon_r\left( 20-\frac{1}{9}\sqrt{32397}\right) =\dfrac{20+\frac{1}{9}\sqrt{32397}}{ 20-\frac{1}{9}\sqrt{32397}}\epsilon_r
+	\end{equation}
+	On $\epsilon_r$ és l'error relatiu que suposarem prové només de l'expressió en punt flotant i que és el mateix per als dos sumands, de l'ordre de $10^{-17}$ en precisió doble, i de $10^{-10}$ en precisió simple. D'aquesta manera obtenim una estimació de $\varepsilon_r(\alpha)\sim10^{-13}$ en precisió doble  i $\varepsilon_r(\alpha)\sim10^{-6}$ en precisió simple, on també hem suposat que la resta d'operacions que es realitzen en l'avaluació d'$\alpha$ no modifiquen de manera significativa l'ordre d'aquests errors relatius.\\
+	
+	
+	A continuació utilitzarem el mètode de Newton per a resoldre \eqref{pol:1}, amb $f(x)=x^3-x-40$, i com a punt inicial $x_0=2$. El programa \texttt{prob1b\_do.c} executa el mètode en precisió doble, i \texttt{prob1b\_fl.c} l'executa en precisió simple. En doble obtenim $\alpha=3.517393514052818$ després de $7$ iteracions, i en simple obtenim $\alpha=3.51739359$ després de $5$ iteracions. Si considerem el mètode de Newton com un mètode del punt fix amb funció d'iteració
+	
+	\begin{equation}\label{pfix}
+		g(x)=x-\dfrac{x^3-x-40}{6x^2-1}
+	\end{equation}
+	tenim que $|g'(2)|\approx3.37>1$, per tant per a aquest $x_0$ no tenim clar si convergirà, ni podem fer una estimació a priori del nombre d'iteracions necessàries. El valor que obtenim després de fer una iteració del mètode de Newton és $x_1\approx5.091$, per a aquest valor $|g'(x_1)|\approx0.45$, que és molt millor que $x_0$ i ens permet estimar a priori que el nombre d'iteracions necessàries serà com a màxim de
+	\begin{equation}\label{iteracions}
+		n\sim\left( \dfrac{\log(\varepsilon(1-0.45)/|5.091-2|)}{\log(0.45)}\right)+1
+	\end{equation}
+	on $\varepsilon$ és la fita de l'error que volem aconseguir. Per a tenir $15$ decimals correctes, és a dir $\varepsilon<10^{-15}$ a priori necessitem $n\sim47$, i per a tenir $8$ decimals, $\varepsilon<10^{-8}$ a priori necessitem $n\sim27$ iteracions. Aquestes fites són tan elevades degut a que el punt $x_0=2$ és un punt molt dolent on començar.\\
+	
+	
+	Considerem ara l'equació polinòmica:
+	\begin{equation}\label{pol:2}
+		x^3=x+400
+	\end{equation}
+	si escribim aquesta equació com a $p(x)=x^3-x-400=0$, veiem que només hi ha un canvi de signe en els seus coeficients, i per tant per la regla dels signes de Descartes tenim que aquest polinomi té una única arrel positiva. Com que $p(2)=-394<0$, $p(8)=104>0$ i $p(x)$ és continu, pel teorema de Bolzano tenim que aquesta arrel $\beta$ es troba a l'interval $[2,8]$. La fórmula de Cardano que obtenim per a aquesta arrel és:
+	\begin{equation}\label{betaarrel}
+		\beta=\left( 200+\frac{1}{9}\sqrt{3239997}\right)^{1/3}\left( 200-\frac{1}{9}\sqrt{3239997}\right)^{1/3}
+	\end{equation}
+	El programa \texttt{prob1c.c} avalua $\beta$ en precisió doble. Obtenim $\beta=7.413302725859884$, però el valor veritable amb $15$ xifres decimals és: $\beta=7.413302725857898$, per tant es produeix un error absolut $\varepsilon_a(\beta)=1.986\times10^{-12}$. Aquest error prové fonamentalment de la cancelació que es produeix al segón terme de \eqref{betaarrel}.\\
+	
+	En el programa \texttt{prob1c123.c} obtenim $15$ decimals correctes de $\beta$, treballant amb precisió doble, aplicant el mètode de la bisecció i el mètode de la secant partint de l'interval $[2,8]$, i el mètode de Newton amb $x_0=2$.
+	
+	Amb el mètode de la bisecció hem necessitat $50$ iteracions per a trobar $\beta$, amb el de la secant hem necessitat $8$ iteracions, mentre que amb el de Newton n'hem necessitat $10$. Observem que el mètode de la bisecció és molt lent comparat amb els altres dos, però el mètode de Newton i el de la secant tampoc han sigut especialment ràpids degut a que el punt $x_0=2$ es troba prou allunyat de l'arrel.
+	
+	\newpage
+
+\section*{Problema 2}
+El programa \texttt{prob2a.c} conté codi que executa la iteració descrita al problema 2. Si comencem la iteració a \( x_0 = \num{7.5} \) aleshores obtenim l'arrel \( x^* \) amb 15 xifres decimals correctes després de 4 iteracions. Obtenim \( x^* = \num{7.413302725857898} \), que és coherent amb els resultats del problema anterior.  
+
+Per estudiar l'ordre de convergència aproximarem \( \abs{x_k - x^*} \) per \( e_k = \abs{x_{k} - x_{k+1}} \). El codi de \texttt{prob2a.c} també realitza el càlcul de \( e_k/e_{k-1} \), \( e_k/e_{k-1}^2 \) i \( e_k/e_{k-1}^3 \). Com que després de 4 iteracions ja hem obtingut \( x^* \) amb més precisió que la que permet el format \texttt{double} \( e_5 \) és 0. Per tant el quocient \( e_6 / e_5 \) dóna \texttt{nan} com a resultat. Tot i això, només amb 4 iteracions ja podem dir que l'ordre de convergència és quadràtic.  
+
+
+\newpage
+
+	\section*{Problema 3}
+	Considerem l'equació $f(x)=0$, amb $f(x)$ contínuament derivable, si $x^*$ és una arrel simple, de manera que compleix $f(x^*)=0$ i $f'(x)\neq0$ en un entorn de $x^*$, aleshores podem utilitzar el métode de Halley que consisteix en la iteració
+	\begin{equation}\label{halley}
+		x_{k+1}=x_k-\dfrac{2f(x_k)f'(x_k)}{2(f'(x_k))^2-f(x_k)f''(x_k)}
+	\end{equation}
+	per a aproximar $x^*$.\\
+	
+	Al programa \texttt{prob3.c} hem utilitzat aquest mètode per a calcular l'arrel de $f(x)=x^3-x-400$ amb $15$ decimals correctes. Hem obtingut $x^*=7.413302725857898$ en $5$ iteracions, partint de $x_0=2$.
+	
+	Per a comprobar que aquest mètode té ordre de convergència $3$ considerem $e_k=|x_k-x_{k-1}|$ i estudiem els quocients $\frac{e_k}{(e_{k-1})^3}$, obtenim:
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			k&$x_k$&$\frac{e_k}{(e_{k-1})^3}$\\
+			\hline
+			\hline
+			$1$&$3.744064386317907$&$-$\\
+			\hline
+			$2$&$6.305068367267490$&$0.482750477268219$\\
+			\hline
+			$3$&$7.392360605150256$&$0.064731478548905$\\
+			\hline
+			$4$&$7.413302612248415$&$0.016292188999870$\\
+			\hline
+			$5$&$7.413302725857898$&$0.012369714472980$\\
+			\hline
+		\end{tabular}
+	\end{center}
+	per tant veiem que $e_k\sim (e_{k-1})^3$, de manera que el mètode de Halley té ordre de convergència cúbic.
+	
+\end{document}

@@ -31,15 +31,18 @@ int main() {
 
 	int i;
 	for(i = 0; i < n; i++) {
-		printf("x[%d] = %.16lf\n", i, x);
-
 		xVella = x;
 		x = iterarX(x,b);	
 		b = iterarB(x,b);
 
 		eVell = e;	
 		e = fabs(xVella - x);		
+
+		printf("x[%d] = %.16lf\n", i + 1, x);
+		printf("e[%d]/e[%d] = %.16lf\n", i+1, i, e/(eVell));
 		printf("e[%d]/e[%d]^2 = %.16lf\n", i+1, i, e/(eVell*eVell));
+		printf("e[%d]/e[%d]^3 = %.16lf\n", i+1, i, e/(eVell*eVell*eVell));
+		printf("----------------------\n");
 	}
 }
 
