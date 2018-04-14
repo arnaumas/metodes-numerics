@@ -24,16 +24,17 @@ int main() {
 	p = iterarP(a,s);
 	e = fabs(p - M_PI);
 
-	double aVell, bVell, sVell, eVell, cVell;
+	double aVell, bVell, sVell, eVell, cVell, pVell;
 	double pot = 1;
 	int i;
-	for(i = 1; i < n; i++) {
+	for(i = 1; i <= n + 1; i++) {
 		// Guardem els valors de la iteració anterior
 		aVell = a;	
 		bVell = b;	
 		sVell = s;
-        cVell = c;
+    cVell = c;
 		eVell = e;
+		pVell = p;
 
 
 		// Iterem cada variable
@@ -46,14 +47,17 @@ int main() {
 		e = fabs(p - M_PI);
 
 		// Analitzem l'error
-		printf("p[%2d] - pi = %.16lf\n", i, fabs(p - M_PI));
-		printf("e[%d]/e[%d]^2 = %.16lf\n", i+1, i, e/(eVell * eVell));
-        printf("c[%2d] = %.16lf\n", i - 1, cVell);
-        printf("s[%2d] = %.16lf\n", i - 1, sVell);
-        printf("a[%2d] = %.16lf\n", i - 1, aVell);
-        printf("b[%2d] = %.16lf\n", i - 1, bVell);
-        printf("\n");
-    }
+    printf("p[%2d] = %.16lf\n", i - 1, pVell);
+    printf("a[%2d] = %.16lf\n", i - 1, aVell);
+    printf("b[%2d] = %.16lf\n", i - 1, bVell);
+    printf("c[%2d] = %g\n", i - 1, cVell);
+    printf("s[%2d] = %.16lf\n", i - 1, sVell);
+    printf("e[%2d] = %.16lf\n", i - 1, eVell);
+		printf("e[%2d]/e[%2d] = %.16lf\n", i, i - 1, e/(eVell));
+		printf("e[%2d]/e[%2d]^2 = %.16lf\n", i, i - 1, e/(eVell * eVell));
+		printf("e[%2d]/e[%2d]^3 = %.16lf\n", i, i - 1, e/(eVell * eVell * eVell));
+    printf("--------\n");
+  }
 
 }
 

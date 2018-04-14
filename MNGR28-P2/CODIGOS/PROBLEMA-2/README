@@ -1,0 +1,5 @@
+Per compilar cada programa només cal executar 'make <Nom del programa>'. També es pot executar 'make all' per compilar tots els programes alhora.
+
+L'únic programa és 'prob2a', que executa la iteració i imprimeix per pantalla el resultat i l'error en cada iteració. 
+
+Es pot executar 'make clean' per eliminar els codis objecte i 'make realclean' per eliminar també els executables.

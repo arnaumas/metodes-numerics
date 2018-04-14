@@ -1,0 +1,5 @@
+Per compilar cada programa només cal executar 'make <Nom del programa>'. També es pot executar 'make all' per compilar tots els programes alhora.
+
+L'únic programa és 'prob4', que executa la iteració fins al nombre introduït i imprimeix per pantalla el resultat de cada quantitat a cada iteració.
+
+Es pot executar 'make clean' per eliminar els codis objecte i 'make realclean' per eliminar també els executables.
