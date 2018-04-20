@@ -8,6 +8,10 @@ int main(int argc, char* argv[]) {
 	FILE* nodes; 
 	char* nom = argv[1];
 
+	double* x;
+	double* f;
+	double** difs;
+
 	// Comprovem que el fitxer es pot obrir
 	if((nodes = fopen(nom, "r")) == NULL) {
 		fprintf(stderr, "ERROR: El fitxer introduït no existeix o no es pot obrir.\n");	
@@ -31,12 +35,12 @@ int main(int argc, char* argv[]) {
 	rewind(nodes);
 
 	// Inicialitzem les llistes
-	double* x = (double*) malloc(n*sizeof(double));
-	double* f = (double*) malloc(n*sizeof(double));
-	double** difs = (double**) malloc(n*sizeof(double*));
+	x = (double*) malloc(n*sizeof(double));
+	f = (double*) malloc(n*sizeof(double));
+	difs = (double**) malloc(n*sizeof(double*));
 	int i;
 	for(i = 0; i < n; i++) {
-		difs[i] = (double*) malloc(n*sizeof(double));
+		difs[i] = (double*) malloc(n * sizeof(double));
 	}
 
 	// Llegim els nodes
@@ -44,10 +48,7 @@ int main(int argc, char* argv[]) {
 		if((fscanf(nodes,"%lf, %lf", &x[i], &f[i])) != 2) {
 			fprintf(stderr, "ERROR: No s'han pogut llegir correctament les dades.\n");
 		}
-		printf("x = %lf, f = %lf\n", x[i], f[i]);
-		
 	}
-
 
 	diferencies_dividides(x, f, difs, n);
 	for(i = 0; i < n; i++) {

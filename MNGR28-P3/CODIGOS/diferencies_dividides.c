@@ -15,14 +15,12 @@ void diferencies_dividides(double* x, double* f, double** difs, int n) {
   //Inicialitzem la primera columna
   for(i = 0; i < n ; i++) {
     difs[i][0] = f[i];
-		printf("difs[%d][0] = %lf\n", i, difs[i][0]);
   }
 
   //Apliquem la recursió
   for(j = 1; j < n; j++) {
     for(i = j; i < n; i++) {
       difs[i][j] = (difs[i][j-1] - difs[i-1][j-1]) / (x[i] - x[i-j]);
-			printf("difs[%d][%d] = %lf\n", i, j, difs[i][j]);
     }
   }
 }
