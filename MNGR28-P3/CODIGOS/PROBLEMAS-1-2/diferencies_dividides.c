@@ -43,19 +43,19 @@ double ff(double x) {
   return f;
 }
 
-// Genera les ordenades dels nodes equidistants
+// Genera les ordenades de n nodes equidistants
 void nodosequi(int n, double *v) {
   int j; //comptador
-  for(j = 0; j <= n; j++){
-    v[j] = -1 + j*2./n;
+  for(j = 0; j < n; j++){
+    v[j] = -1 + j*2./(n-1);
   }
 }
 
-// Genera les ordenades dels nodes de Chebyshev
+// Genera les ordenades de n nodes de Chebyshev
 void nodoscheb(int n, double *v) {
   int j; //comptador
-  for(j = 0; j <= n; j++) {
-    v[j] = cos(((2.*j+1)/(n+1))*M_PI/2);
+  for(j = 0; j < n; j++) {
+    v[j] = cos(((2.*j+1)/(n)*M_PI/2);
   }
 }
 
