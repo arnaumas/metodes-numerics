@@ -55,7 +55,7 @@ void nodosequi(int n, double *v) {
 void nodoscheb(int n, double *v) {
   int j; //comptador
   for(j = 0; j < n; j++) {
-    v[j] = cos(((2.*j+1)/(n)*M_PI/2);
+    v[j] = cos((2.*j+1)/n * M_PI/2);
   }
 }
 
