@@ -30,6 +30,8 @@
 
 \crefname{figure}{figura}{figures}
 
+\graphicspath{./figs/}
+
 % Unitats
 \sisetup{
 	inter-unit-product = \ensuremath{ \cdot },
@@ -94,5 +96,14 @@ per \( k \in \{0, \cdots, n-1\} \). Es proposa fer la interpolació fent servir 
 
 El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner. El fitxer auxiliar \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
 
+\parbreak
+
+Per a tenir una idea del màxim error que es comet en cada cas hem avaluat tant la funció com el polinomi en un nombre elevat de punts. En particular en els punts donats per \( x_k = \num{-0.989} + k \cdot \num{0.011} \) per \( k \in \{0, \cdots, 180\} \), que són 181 punts repartits de forma equidistant a l'interval on estem interpolant.  
+
+\begin{figure}[htb]
+\centering
+\input{./figs/16_cheb.tex}
+
+\end{figure}
 
 \end{document}
