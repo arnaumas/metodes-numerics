@@ -1,0 +1,98 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[catalan]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[bf,sf,small,pagestyles]{titlesec}
+\usepackage[font={footnotesize, sf}, labelfont=bf]{caption} 
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage[catalan]{cleveref}
+
+\geometry{
+	a4paper,
+	right = 2.5cm,
+	left = 2.5cm,
+	bottom = 3cm,
+	top = 3cm
+}
+
+\hypersetup{
+	colorlinks,
+	linkcolor = {red!50!blue},
+	linktoc = page
+}
+
+\crefname{figure}{figura}{figures}
+
+% Unitats
+\sisetup{
+	inter-unit-product = \ensuremath{ \cdot },
+	allow-number-unit-breaks = true,
+	detect-family = true,
+	list-final-separator = { i },
+	list-units = single
+}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\parbreak}{
+	\begin{center}
+		--- $\ast$ ---
+	\end{center} 
+}
+\makeatletter
+\newcommand*{\defeq}{\mathrel{\rlap{%
+    \raisebox{0.3ex}{$\m@th\cdot$}}%
+  \raisebox{-0.3ex}{$\m@th\cdot$}}%
+=}
+\makeatother
+
+\newpagestyle{pagina}{
+	\headrule
+	\sethead*{\sffamily {\bfseries Pràctica 3:} Interpolació polinòmica i integració numèrica}{}{\sffamily \sectiontitle}
+	\footrule
+	\setfoot*{}{}{\sffamily \thepage}
+}
+\renewpagestyle{plain}{
+	\footrule
+	\setfoot*{}{}{\sffamily \thepage}
+}
+\pagestyle{pagina}
+
+\titleformat{\section}[hang]{\bfseries \sffamily \Large}{}{0pt}{}{\thispagestyle{plain}}
+
+\title{\sffamily {\bfseries Pràctica 3:} Interpolació polinòmica i integració numèrica}
+\author{\sffamily Arnau Mas}
+\date{\sffamily 24 d'Abril 2018}
+
+\begin{document}
+\maketitle
+
+\section{Problema 1}
+L'objectiu d'aquest problema és interpolar la funció \( f \colon \R \to \R \) donada per
+\begin{equation*}
+	f(x) = \frac{1}{1 + 25x^2}
+\end{equation*}
+a l'interval \( [-1,1] \) mitjançant el polinomi interpolador de Lagrange. Es faran servir dos conjunts de nodes diferents per a realitzar la interpolació. En primer lloc, \( n \) nodes equidistants dins de l'interval, és a dir, donats per
+\begin{equation*}
+x_k = -1 + \frac{2k}{n}
+\end{equation*}
+per \( k \in \{0, \cdots, n-1\} \). Els altres nodes que farem servir seran nodes de Chebyshev, definits com
+\begin{equation*}
+x_k = \cos{\frac{2k+1}{n+1} \frac{\pi}{2}}
+\end{equation*}
+per \( k \in \{0, \cdots, n-1\} \). Es proposa fer la interpolació fent servir 4, 8, 16, 32 i 64 nodes. 
+
+El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner. El fitxer auxiliar \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
+
+
+\end{document}
