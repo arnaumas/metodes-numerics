@@ -1,0 +1,18 @@
+set terminal epslatex size 7cm,7cm color colortext 
+set output '04-cheb.tex'
+
+set format '\num{%g}'
+set border linewidth 1.5
+
+set xrange [-1.1:1.1]
+set xtics scale 0.75, 0.5
+set yrange [0:1.2]
+set ytics scale 0.75, 0.25
+
+set style line 1 linecolor rgb "orange-red"
+set style line 2 linecolor rgb "green"
+set style line 3 linecolor rgb "blue" pointtype 2 pointsize 0.7
+
+plot '04-avaluats.dat' using 1:2 notitle with lines linestyle 1, \
+'04-cheb-interpolats.dat' using 1:2 notitle with lines linestyle 2, \
+'04-cheb.dat' using 1:2 notitle with points linestyle 3

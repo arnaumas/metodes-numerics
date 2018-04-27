@@ -20,11 +20,11 @@ int main(int argc, char* argv[]) {
   f = malloc(n*sizeof(double));
 
 	char nom[50];
-	sprintf(nom, "%d", n);
+	sprintf(nom, "%02d", n);
 	if(strcmp(argv[1], "cheb") == 0) {
-		strcat(nom, "_cheb.dat");
+		strcat(nom, "-cheb.dat");
 	} else if(strcmp(argv[1], "eq") == 0) {
-		strcat(nom, "_eq.dat");
+		strcat(nom, "-eq.dat");
 	}	
 	FILE* nodes = fopen(nom, "w");
 	fprintf(nodes, "%s\n", argv[1]);

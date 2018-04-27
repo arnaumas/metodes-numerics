@@ -27,11 +27,11 @@ int main(int argc, char* argv[]) {
 	char tipus[50];
 	fscanf(nodes, "%s\n", tipus);
 
-	// El resultat de la interpolació es guardarà a un fitxer amb nom 'n_eq_interpolats.dat' o 'n_cheb_interpolats.dat' segons si fem servir els nodes de Chebyshev o equidistants
+	// El resultat de la interpolació es guardarà a un fitxer amb nom 'n-eq-interpolats.dat' o 'n-cheb-interpolats.dat' segons si fem servir els nodes de Chebyshev o equidistants
 	char nom1[50];
-	char titolcheb[50] = "_cheb_interpolats.dat";
-	char titoleq[50] = "_eq_interpolats.dat";
-	sprintf(nom1, "%d", n);
+	char titolcheb[50] = "-cheb-interpolats.dat";
+	char titoleq[50] = "-eq-interpolats.dat";
+	sprintf(nom1, "%02d", n);
 	if(strcmp(tipus, "cheb") == 0) {
 		strcat(nom1, titolcheb);
 	} else if(strcmp(tipus, "eq") == 0) {
@@ -39,10 +39,10 @@ int main(int argc, char* argv[]) {
 	}
   interpol = fopen(nom1, "w");	
 
-	// El resultat del càlcul directe mitjançant la funció es guardarà a un fitxer amb nom 'n_avaluats.dat'
+	// El resultat del càlcul directe mitjançant la funció es guardarà a un fitxer amb nom 'n-avaluats.dat'
 	char nom2[50];
-	char titol2[] = "_avaluats.dat";
-	sprintf(nom2, "%d", n);
+	char titol2[] = "-avaluats.dat";
+	sprintf(nom2, "%02d", n);
 	strcat(nom2, titol2);
   funcio = fopen(nom2, "w");	
 
