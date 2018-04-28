@@ -1,1 +1,1 @@
-PROBLEMA-1/diferencies_dividides.h
+../PROBLEMA-1/diferencies_dividides.h

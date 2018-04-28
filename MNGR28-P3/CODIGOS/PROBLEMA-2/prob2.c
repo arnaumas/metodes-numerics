@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 	}
 
         r=horner(n, coef, x, 0);
-        printf("x*=%lf\n",r);
+        printf("x*=%.15lf\n",r);
 
 	return 0;
 }
