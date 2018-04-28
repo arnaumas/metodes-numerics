@@ -106,4 +106,52 @@ Per a tenir una idea del màxim error que es comet en cada cas hem avaluat tant 
 	\input{./figs/16-eq.tex}\input{./figs/16-cheb.tex}
 \end{figure}
 
+\newpage
+	\section*{Problema 2}
+	Considerem la funció de Bessel de primera espècie d'ordre zero, $J_0(x)$. Volem estimar el valor en l'absissa $x^*$ tal que $J_0(x^*)=0$, per això realitzarem interpolació inversa de graus $1$, $3$ i $5$, és a dir, si $(x, J_0(x))$ són els punts de la funció de Bessel que ens dónen, nosaltres prendrem $(J_0(x), x)$ com a punts per a realitzar la interpolació. De manera que si $p(x)$ és el nostre polinomi interpolador, al avaluar $p(0)$ obtindrem una aproximació de $x^*$.\\
+	
+	El programa \texttt{prob2.c} donats uns punts com a entrada, calcula el polinomi interpolador de Lagrange amb el mètode de les diferències dividides de Newton i l'avalua en el punt zero amb la regla de Horner. Els resultats que hem obtingut al realitzar les interpolacions demanades han sigut els següents:
+	
+	\begin{table}[h!]
+		\centering
+		\caption{Interpolant valors positius de $J_0(x)$ més pròxims al canvi de signe de la funció.}	
+		\begin{tabular}{c|c|c}
+			Grau & $x^*$ &$J_0(x^*)$\\
+			\hline
+			\hline
+			$1$ & $2.404728613882804$  &$5.03291522479392\times10^{-5}$\\
+			$3$ & $2.404822718113948$ &$1.47416266795862\times10^{-6}$\\
+			$5$ & $2.404825294785460$ &$1.36489238329446\times10^{-7}$\\
+		\end{tabular}
+	\end{table}
+	
+	\begin{table}[h!]
+		\centering
+		\caption{Interpolant valors negatius de $J_0(x)$ més pròxims al canvi de signe de la funció.}	
+		\begin{tabular}{c|c|c}
+			Grau & $x^*$ &$J_0(x^*)$\\
+			\hline
+			\hline
+			$1$ & $2.400077241947102$&$2.46750381340249\times10^{-3}$\\
+			$3$ & $2.404149375353531$&$3.51087705194527\times10^{-4}$\\
+			$5$ &$2.404216734868258$ &$3.16108843546827\times10^{-4}$\\
+		\end{tabular}
+	\end{table}
+	
+	\begin{table}[h!]
+		\centering
+		\caption{Interpolant valors de $J_0(x)$ simètrics al canvi de signe de la funció.}	
+		\begin{tabular}{c|c|c}
+			Grau & $x^*$ &$J_0(x^*)$\\
+			\hline
+			\hline
+			$1$ & $2.404927513002775$  &$-5.29287203952310\times10^{-5}$\\
+			$3$ & $2.404824021911155$ &$7.97298995297100\times10^{-7}$\\
+			$5$ & $2.404825653043717$ &$-4.94996456864148\times10^{-8}
+			$\\
+		\end{tabular}
+	\end{table}
+	Observem que el millor resultat l'obtenim amb la interpolació de grau 5 de valors simètrics al voltant del canvi de signe de $J_0(x)$. En general les millors són les interpolacions amb els valors positius i amb els simètrics, i la interpolació amb valors negatius és prou dolenta en comparació.\\
+	
+	De fet ja podíem esperar des del principi que la millor interpolació fos la simètrica, ja que és l'única que en l'interval de punts interpoladors conté al $x^*$, i en general si tenim els punts interpoladors en un interval $[a,b]$ i volem avaluar el polinomi interpolador $p(x)$ en un punt fora d'aquest interval, l'error obtingut pot ser molt gran.
 \end{document}
