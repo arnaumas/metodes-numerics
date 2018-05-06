@@ -11,6 +11,7 @@
 \usepackage[font={footnotesize, sf}, labelfont=bf]{caption} 
 \usepackage{siunitx}
 \usepackage{graphicx}
+\usepackage{booktabs}
 \usepackage{amsmath,amssymb}
 \usepackage[catalan]{cleveref}
 
@@ -82,6 +83,16 @@
 \maketitle
 
 \section{Problema 1}
+\begin{figure}[p]
+	\centering
+	\sffamily \footnotesize
+	\input{./figs/04-eq.tex}\input{./figs/04-cheb.tex}
+	\input{./figs/08-eq.tex}\input{./figs/08-cheb.tex}
+	\input{./figs/16-eq.tex}\input{./figs/16-cheb.tex}
+	\input{./figs/32-eq.tex}\input{./figs/32-cheb.tex}
+	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta)}
+	\label{fig:interpolacio}
+\end{figure}
 L'objectiu d'aquest problema és interpolar la funció \( f \colon \R \to \R \) donada per
 \begin{equation*}
 	f(x) = \frac{1}{1 + 25x^2}
@@ -92,22 +103,12 @@ a l'interval \( [-1,1] \) mitjançant el polinomi interpolador de Lagrange. Es f
 \end{equation*}
 per \( k \in \{0, \cdots, n-1\} \). Els altres nodes que farem servir seran nodes de Chebyshev, definits com
 \begin{equation*}
-	x_k = \cos{\frac{2k+1}{n+1} \frac{\pi}{2}}
+	x_k = \cos{\left(\frac{2k+1}{n+1} \frac{\pi}{2}\right)}
 \end{equation*}
 per \( k \in \{0, \cdots, n-1\} \). Es proposa fer la interpolació fent servir 4, 8, 16, 32 i 64 nodes. 
 
 El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner. El fitxer auxiliar \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
 
-\begin{figure}[htb]
-	\centering
-	\sffamily \footnotesize
-	\input{./figs/04-eq.tex}\input{./figs/04-cheb.tex}
-	\input{./figs/08-eq.tex}\input{./figs/08-cheb.tex}
-	\input{./figs/16-eq.tex}\input{./figs/16-cheb.tex}
-	\input{./figs/32-eq.tex}\input{./figs/32-cheb.tex}
-	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta)}
-	\label{fig:interpolacio}
-\end{figure}
 
 \parbreak
 
@@ -116,96 +117,103 @@ Per a tenir una idea del màxim error que es comet en cada cas hem avaluat tant 
 \newpage
 
 \section{Problema 2}
-Considerem la funció de Bessel de primera espècie d'ordre zero, $J_0(x)$. Volem estimar el valor en l'absissa $x^*$ tal que $J_0(x^*)=0$, per això realitzarem interpolació inversa de graus $1$, $3$ i $5$, és a dir, si $(x, J_0(x))$ són els punts de la funció de Bessel que ens dónen, nosaltres prendrem $(J_0(x), x)$ com a punts per a realitzar la interpolació. De manera que si $p(x)$ és el nostre polinomi interpolador, al avaluar $p(0)$ obtindrem una aproximació de $x^*$.
+Considerem la funció de Bessel de primera espècie d'ordre zero, $J_0(x)$. Volem estimar els valors de les arrels de \( J_0 \), és a dir, de les \( x^{\ast} \) tals que \( J_0(x^{\ast}) = 0 \). Una manera de fer-ho és interpolar la inversa de \( J_0 \) a l'interval \( (1.9, 3) \). En aquest interval \( J_0 \) és localment invertible ja que és estrictament decreixent i derivable. Concretament construirem el polinomi interpolador que té per nodes \( (J_0(x_n), x_n) \). D'aquesta manera, si \( p \) és el polinomi que obtenim, \( p(0) \) és una aproximació de \( x^{\ast} \).
 
-El programa \texttt{prob2.c} donats uns punts com a entrada, calcula el polinomi interpolador de Lagrange amb el mètode de les diferències dividides de Newton i l'avalua en el punt zero amb la regla de Horner. Els resultats que hem obtingut al realitzar les interpolacions demanades han sigut els següents:
+El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el mètode de les diferències dividides de Newton a partitr d'un conjunt de nodes donats. Seguidament l'avalua al punt zero fent servir la regla de Horner. La interpolació s'ha fet de grau 1, 3 i 5 i els resultats es mostren a 
 
-\begin{table}[h!]
-	\centering
+\begin{table}[htb]
+	\sffamily \small	\centering
 	\caption{Interpolant valors positius de $J_0(x)$ més pròxims al canvi de signe de la funció.}	
-	\begin{tabular}{c|c|c}
-		Grau & $x^*$ &$J_0(x^*)$\\
-		\hline
-		\hline
-		$1$ & $2.404728613882804$  &$5.03291522479392\times10^{-5}$\\
-		$3$ & $2.404822718113948$ &$1.47416266795862\times10^{-6}$\\
-		$5$ & $2.404825294785460$ &$1.36489238329446\times10^{-7}$\\
+	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
+		\toprule
+		{Grau} & { \( x^{\ast} \) } & { \( J_0(x^{\ast}) \) } \\
+		\midrule
+		1 & 2.404728613882804 & 5.03291522479392d-5\\
+		3 & 2.404822718113948 & 1.47416266795862d-6\\
+		5 & 2.404825294785460 & 1.36489238329446d-7\\
 	\end{tabular}
 \end{table}
 
-\begin{table}[h!]
-	\centering
+\begin{table}[htb]
+	\sffamily \small	\centering
 	\caption{Interpolant valors negatius de $J_0(x)$ més pròxims al canvi de signe de la funció.}	
-	\begin{tabular}{c|c|c}
-		Grau & $x^*$ &$J_0(x^*)$\\
-		\hline
-		\hline
-		$1$ & $2.400077241947102$&$2.46750381340249\times10^{-3}$\\
-		$3$ & $2.404149375353531$&$3.51087705194527\times10^{-4}$\\
-		$5$ &$2.404216734868258$ &$3.16108843546827\times10^{-4}$\\
+	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
+		\toprule
+		{Grau} & { \( x^{\ast} \) } & { \( J_0(x^{\ast}) \) } \\
+		\midrule
+		1 & 2.400077241947102 & 2.46750381340249d-3\\
+		3 & 2.404149375353531 & 3.51087705194527d-4\\
+		5 & 2.404216734868258 & 3.16108843546827d-4\\
 	\end{tabular}
 \end{table}
 
-\begin{table}[h!]
-	\centering
+\begin{table}[htb]
+	\sffamily \small	\centering
 	\caption{Interpolant valors de $J_0(x)$ simètrics al canvi de signe de la funció.}	
-	\begin{tabular}{c|c|c}
-		Grau & $x^*$ &$J_0(x^*)$\\
-		\hline
-		\hline
-		$1$ & $2.404927513002775$  &$-5.29287203952310\times10^{-5}$\\
-		$3$ & $2.404824021911155$ &$7.97298995297100\times10^{-7}$\\
-		$5$ & $2.404825653043717$ &$-4.94996456864148\times10^{-8}
-		$\\
+	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
+		\toprule
+		{Grau} & { \( x^{\ast} \) } & { \( J_0(x^{\ast}) \) } \\
+		\midrule
+		1 & 2.404927513002775 & -5.29287203952310d-5\\
+		3 & 2.404824021911155 & 7.97298995297100d-8\\
+		5 & 2.404825653043717 & -4.94996456864148d-8\\
 	\end{tabular}
 \end{table}
+
 Observem que el millor resultat l'obtenim amb la interpolació de grau 5 de valors simètrics al voltant del canvi de signe de $J_0(x)$. En general les millors són les interpolacions amb els valors positius i amb els simètrics, i la interpolació amb valors negatius és prou dolenta en comparació.
 
 De fet ja podíem esperar des del principi que la millor interpolació fos la simètrica, ja que és l'única que en l'interval de punts interpoladors conté al $x^*$, i en general si tenim els punts interpoladors en un interval $[a,b]$ i volem avaluar el polinomi interpolador $p(x)$ en un punt fora d'aquest interval, l'error obtingut pot ser molt gran.
 
 \newpage
-\section*{Problema 3}
+
+\section{Problema 3}
 El nostre objectiu és obtenir un valor aproximat de la integral
-\begin{equation}\label{valex}
-I=\int^{1}_0\dfrac{dx}{1+x^2}=\arctan(1)-\arctan(0)=\frac{1}{4}\pi\approx0.785398163397448
+\begin{equation}\label{eq:integral}
+	I=\int^{1}_0\dfrac{dx}{1+x^2} = \arctan(1) - \arctan(0) = \frac{1}{4}\pi \approx \num{0.785398163397448}
 \end{equation}
-pel mètode dels trapezis i pel mètode de Simpson dividint el interval $[0,1]$ en quatre parts iguals.\\
+pel mètode dels trapezis i pel mètode de Simpson dividint l'interval $[0,1]$ en quatre parts iguals.
 
-El programa \texttt{prob3.c} calcula aquestes aproximacions i l'error que es comet amb cadascuna. Amb el mètode dels trapezis hem obtingut $I\approx0.782794117647059$, que comparat amb el valor exacte amb $15$ decimals de \eqref{valex} ens dóna un error aproximat de $2.604045750389\times10^{-3}$.
+El programa \texttt{prob3.c} calcula aquestes aproximacions i l'error que es comet amb cadascuna. Amb el mètode dels trapezis hem obtingut $I \approx \num{0.782794117647059}$, que comparat amb el valor exacte amb $15$ decimals de l'\cref{eq:integral} ens dóna un error aproximat de $\num{2.604045750389d-3}$.
 
 
-Amb el mètode de Simpson obtenim $I\approx0.785392156862745$, que comparat amb $\eqref{valex}$ té un error aproximat de $6.006534703\times10^{-6}$.
+Amb el mètode de Simpson obtenim $I \approx \num{0.785392156862745}$, que comparat amb l'\cref{eq:integral} té un error aproximat de $\num{6.006534703d-6}$.
 
-Per tant veiem que amb la regla composta de Simpson hem obtingut una millor aproximació.
+Per tant veiem que amb la regla de Simpson hem obtingut una millor aproximació.
+
 \newpage
-\section*{Problema 4}
+
+\section{Problema 4}
 El nostre objectiu és obtenir un valor aproximat de la integral
 \begin{equation*}
-I=\int^{5}_1\dfrac{e^x}{x}dx
+	I=\int^{5}_1 \dfrac{e^x}{x} \,dx
 \end{equation*}
-pel mètode dels trapezis dividint el interval $[1,5]$ en $n=4, 8, 16, 32, 64$ parts iguals.\\
+pel mètode dels trapezis dividint l'interval $[1,5]$ en $n=4, 8, 16, 32, 64$ parts iguals.
 
-El programa \texttt{prob4.c} calcula aquestes aproximacions i una estimació de l'error comés. Els resultats obtinguts per a cada $n$ són els següents:
-\begin{table}[h!]
-	\centering
-	\caption{Resultat i estimació de l'error obtingut per a cada n.}	
-	\begin{tabular}{c|c|c}
-		$n$ & Aproximació $I$ &Estimació error\\
-		\hline
-		\hline
-		$4$ & $40.239701356634455$  &$10.000000000000000$\\
-		$8$ & $38.782928156314796$ &$2.500000000000000$\\
-		$16$ & $38.413711363539406$ &$0.625000000000000$\\
-		$32$ & $38.321069162332130$ &$0.156250000000000$\\
-		$64$ & $38.297886904128802$ &$0.039062500000000$\\
+El programa \texttt{prob4.c} calcula aquestes aproximacions i una estimació de l'error comés. Els resultats obtinguts per a cada $n$ es mostren a la \cref{tab:resultats}. 
+
+\begin{table}[h]
+	\centering \sffamily \small
+	\caption{Resultat i estimació de l'error obtingut per a cada \( n \).}	
+	\label{tab:resultats}
+	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
+		\toprule
+		{ \( n \) } & {Aproximació de \( I \) } & { Estimació de l'error } \\
+		\midrule
+		4 & 40.239701356634455 & 10\\
+		8 & 38.782928156314796 & 2.5\\
+		16 & 38.413711363539406 & 0.625\\
+		32 & 38.321069162332130 & 0.15625\\
+		64 & 38.297886904128802 & 0.0390625\\
 	\end{tabular}
-\end{table}\\
-L'estimació de l'error l'hem calculat segons la fórmula:
-$$\left| \dfrac{(b-a)F}{12}h^2 \right| $$
-on $b$ i $a$ són els extrems del interval, en el nostre cas $b=5$ i $a=1$, $F$ és una fita superior de la segona derivada de la funció de la qual volem aproximar la integral al interval, i $h=(b-a)/n$. Tenim que la segona derivada de $e^x/x$ és:
-$$\dfrac{e^x(x^3-2x^2+2x)}{x^4}\leq\dfrac{e^x}{x}$$
-per a $x\geq 1$, per tant hem triat $F=e^5/5\approx30$. De manera que per a cada $n$ ens queda l'estimació de l'error següent:
-$$10\cdot\left( \frac{4}{n}\right)^2 $$
+\end{table}
 
-Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
+L'estimació de l'error l'hem calculat segons la fórmula:
+\begin{equation*}
+	\abs{\dfrac{(b-a)F}{12}h^2},
+\end{equation*}
+on $b$ i $a$ són els extrems del interval ---en el nostre cas $b=5$ i $a=1$---, $F$ és una fita superior de la segona derivada de la funció que volem integrar a l'interval, i $h=(b-a)/n$. Tenim, per tot \( x \geq 1 \) 
+\begin{equation*}
+	\frac{d^2}{dx^2}\left(\frac{e^x}{x}\right) = \dfrac{e^x(x^3-2x^2+2x)}{x^4} \leq \dfrac{e^x}{x},
+\end{equation*}
+per tant podem triar $F=e^5/5 \approx 30$. De manera que per a cada $n$ ens queda l'estimació de l'error \( 160 \cdot n^{-2} \). Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
 \end{document}
