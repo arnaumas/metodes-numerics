@@ -69,4 +69,50 @@
 	Observem que el millor resultat l'obtenim amb la interpolació de grau 5 de valors simètrics al voltant del canvi de signe de $J_0(x)$. En general les millors són les interpolacions amb els valors positius i amb els simètrics, i la interpolació amb valors negatius és prou dolenta en comparació.\\
 	
 	De fet ja podíem esperar des del principi que la millor interpolació fos la simètrica, ja que és l'única que en l'interval de punts interpoladors conté al $x^*$, i en general si tenim els punts interpoladors en un interval $[a,b]$ i volem avaluar el polinomi interpolador $p(x)$ en un punt fora d'aquest interval, l'error obtingut pot ser molt gran.
+	
+	\newpage
+	\section*{Problema 3}
+	El nostre objectiu és obtenir un valor aproximat de la integral
+	\begin{equation}\label{valex}
+		I=\int^{1}_0\dfrac{dx}{1+x^2}=\arctan(1)-\arctan(0)=\frac{1}{4}\pi\approx0.785398163397448
+	\end{equation}
+	pel mètode dels trapezis i pel mètode de Simpson dividint el interval $[0,1]$ en quatre parts iguals.\\
+	
+	El programa \texttt{prob3.c} calcula aquestes aproximacions i l'error que es comet amb cadascuna. Amb el mètode dels trapezis hem obtingut $I\approx0.782794117647059$, que comparat amb el valor exacte amb $15$ decimals de \eqref{valex} ens dóna un error aproximat de $2.604045750389\times10^{-3}$.
+	
+	
+	Amb el mètode de Simpson obtenim $I\approx0.785392156862745$, que comparat amb $\eqref{valex}$ té un error aproximat de $6.006534703\times10^{-6}$.
+	
+	Per tant veiem que amb la regla composta de Simpson hem obtingut una millor aproximació.
+	\newpage
+	\section*{Problema 4}
+	El nostre objectiu és obtenir un valor aproximat de la integral
+	\begin{equation*}
+	I=\int^{5}_1\dfrac{e^x}{x}dx
+	\end{equation*}
+	pel mètode dels trapezis dividint el interval $[1,5]$ en $n=4, 8, 16, 32, 64$ parts iguals.\\
+	
+	El programa \texttt{prob4.c} calcula aquestes aproximacions i una estimació de l'error comés. Els resultats obtinguts per a cada $n$ són els següents:
+	\begin{table}[h!]
+		\centering
+		\caption{Resultat i estimació de l'error obtingut per a cada n.}	
+		\begin{tabular}{c|c|c}
+			$n$ & Aproximació $I$ &Estimació error\\
+			\hline
+			\hline
+			$4$ & $40.239701356634455$  &$10.000000000000000$\\
+			$8$ & $38.782928156314796$ &$2.500000000000000$\\
+			$16$ & $38.413711363539406$ &$0.625000000000000$\\
+			$32$ & $38.321069162332130$ &$0.156250000000000$\\
+			$64$ & $38.297886904128802$ &$0.039062500000000$\\
+		\end{tabular}
+	\end{table}\\
+	L'estimació de l'error l'hem calculat segons la fórmula:
+	$$\left| \dfrac{(b-a)F}{12}h^2 \right| $$
+	on $b$ i $a$ són els extrems del interval, en el nostre cas $b=5$ i $a=1$, $F$ és una fita superior de la segona derivada de la funció de la qual volem aproximar la integral al interval, i $h=(b-a)/n$. Tenim que la segona derivada de $e^x/x$ és:
+	$$\dfrac{e^x(x^3-2x^2+2x)}{x^4}\leq\dfrac{e^x}{x}$$
+	per a $x\geq 1$, per tant hem triat $F=e^5/5\approx30$. De manera que per a cada $n$ ens queda l'estimació de l'error següent:
+	$$10\cdot\left( \frac{4}{n}\right)^2 $$
+	
+	Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
 \end{document}
