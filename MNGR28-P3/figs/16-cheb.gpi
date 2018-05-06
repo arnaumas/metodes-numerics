@@ -1,4 +1,4 @@
-set terminal epslatex size 8cm,8cm color colortext 
+set terminal epslatex size 8cm,5cm color colortext 
 set output '16-cheb.tex'
 set size ratio -1
 
@@ -14,7 +14,11 @@ set ytics 0.25
 set style line 1 linecolor rgb "orange-red"
 set style line 2 linecolor rgb "green"
 set style line 3 linecolor rgb "blue" pointtype 2 pointsize 0.7
+set style line 4 linecolor rgb "red" linetype 0 pointtype 2 pointsize 0.7
+
+set label '$ n = 16 $' at -0.2, 0.01
 
 plot '16-avaluats.dat' using 1:2 notitle with lines linestyle 1, \
 '16-cheb-interpolats.dat' using 1:2 notitle with lines linestyle 2, \
-'16-cheb.dat' using 1:2 notitle with points linestyle 3
+'16-cheb.dat' using 1:2 notitle with points linestyle 3, \
+'16-cheb-error.dat' using 1:2 notitle with linespoints linestyle 4 
