@@ -216,4 +216,42 @@ on $b$ i $a$ són els extrems del interval ---en el nostre cas $b=5$ i $a=1$---,
 	\frac{d^2}{dx^2}\left(\frac{e^x}{x}\right) = \dfrac{e^x(x^3-2x^2+2x)}{x^4} \leq \dfrac{e^x}{x},
 \end{equation*}
 per tant podem triar $F=e^5/5 \approx 30$. De manera que per a cada $n$ ens queda l'estimació de l'error \( 160 \cdot n^{-2} \). Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
+Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
+
+
+\newpage
+\section{Problema 5}
+Volem calcular amb un error menor que $10^{-2}$ el valor de la integral
+$$I=\int_{1}^{2}\log(x)dx$$
+utilitzant la regla composta de Simpson.\\
+
+Una fita de l'error amb aquest mètode ve donada per:
+$$\varepsilon=\left|\dfrac{(b-a)F}{180}h^4 \right| $$
+on $b$, $a$ són els extrems del interval, $F$ és una fita superior al interval del valor absolut de la quarta derivada de la funció de la qual volem conèixer la integral, i $h=(b-a)/n$ on $n$ és el nombre de divisions del interval que utilitzem. En el nostre cas $a=1$, $b=2$, $|f^{(4)}(x)|=|-6/x^4|\leq6$ per a $x\in[1,2]$, de manera que volem:
+$$10^{-2}\geq\left| \frac{6}{180}\left( \dfrac{1}{n}\right)^4 \right| $$
+Per tant necessitarem fer com a mínim $n=2$ divisions del interval $[1,2]$ per a obtenir la precisió demanada.
+
+El programa \texttt{prob5.c} calcula aquesta integral amb diversos valors per a $n$, els resultats obtinguts són els següents:
+\begin{table}[h!]
+	\centering
+	\caption{Resultats per a diversos $n$ parells}	
+	\begin{tabular}{c|c}
+		$n$ & Aproximació $I$\\
+		\hline
+		\hline
+		$\textbf{2}$ & $\textbf{0.385834602165434}$  \\
+		$4$ & $0.386259562814567$ \\
+		$6$ & $0.386287163278802$ \\
+		$8$ & $0.386292043466313$ \\
+	\end{tabular}
+\end{table}\\
+Observem que amb $n=2$ iteracions ja hem obtingut dues xifres decimals correctes, per tant la nostra estimació de l'error ha sigut adequada.
+
+\newpage
+\section{Problema 6}
+En aquest problema se'ns dóna una sèrie de valors de temps i velocitat, i se'ns demana calcular l'espai recorregut. Volem doncs aproximar la integral:
+$$L=\int_{0}^{84}v(t)dt$$
+per a la qual temin valors discrets de $v(t)$ en intervals de temps de $6s$. Per tant estem dividint el interval $[0,84]$ en $n=14$ parts iguals. Per a trobar $L$ utilitzarem la regla de Simpson composta, ja que en general dóna un millor resultat que la regla composta dels trapezis. \\
+
+El programa \texttt{prob6.c} calcula aquesta aproximació. El resultat que obtenim és $L=2909.400000000000091$m, per tant la pista mesura aproximadament $2.909$km.
 \end{document}
