@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	// Matriu per a fer el càlcul de diferències dividides
 	double** difs;
 	// Coeficients del polinomi de Lagrange
-  double* coef; //vector on guardarem els coeficients del polinomi de lagrange. 
+  double* coef;  
 
 	// Ordenades dels punts proposats
   double* k; 
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
 		if((fscanf(nodes, "%lf\t%lf", &x[i], &f[i])) != 2) {
 			fprintf(stderr, "ERROR: No s'han pogut llegir correctament les dades.\n");
 			return 1;
-		}
+		} 
 	}
 
 	// Calculem els coeficients del polinomi de Lagrange mitjançant l'algoritme de diferències dividides
