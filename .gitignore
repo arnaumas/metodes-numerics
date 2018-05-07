@@ -5,3 +5,7 @@
 *.log
 *.synctex.gz
 *.out
+
+# C Compilation Products
+*.o
+*.dSYM
