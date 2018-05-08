@@ -83,16 +83,7 @@
 \maketitle
 
 \section{Problema 1}
-\begin{figure}[p]
-	\centering
-	\sffamily \footnotesize
-	\input{./figs/04-eq.tex}\input{./figs/04-cheb.tex}
-	\input{./figs/08-eq.tex}\input{./figs/08-cheb.tex}
-	\input{./figs/16-eq.tex}\input{./figs/16-cheb.tex}
-	\input{./figs/32-eq.tex}\input{./figs/32-cheb.tex}
-	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta)}
-	\label{fig:interpolacio}
-\end{figure}
+
 L'objectiu d'aquest problema és interpolar la funció \( f \colon \R \to \R \) donada per
 \begin{equation*}
 	f(x) = \frac{1}{1 + 25x^2}
@@ -107,12 +98,30 @@ per \( k \in \{0, \cdots, n-1\} \). Els altres nodes que farem servir seran node
 \end{equation*}
 per \( k \in \{0, \cdots, n-1\} \). Es proposa fer la interpolació fent servir 4, 8, 16, 32 i 64 nodes. 
 
-El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner. El fitxer auxiliar \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
-
+El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner. El fitxer \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
 
 \parbreak
 
-Per a tenir una idea del màxim error que es comet en cada cas hem avaluat tant la funció com el polinomi en un nombre elevat de punts. En particular en els punts donats per \( x_k = \num{-0.989} + k \cdot \num{0.011} \) per \( k \in \{0, \cdots, 180\} \), que són 181 punts repartits de forma equidistant a l'interval on estem interpolant.  
+Per a tenir una idea del màxim error que es comet en cada cas hem avaluat tant la funció com el polinomi en un nombre elevat de punts. En particular en els punts donats per \( x_k = \num{-0.989} + k \cdot \num{0.011} \) per \( k \in \{0, \cdots, 180\} \), que són 181 punts repartits de forma equidistant a l'interval on estem interpolant. Si denotem per \( L_n \) el polinomi de Lagrange de grau \( n \) obtingut a partir dels nodes \( \{(x_0, f(x_0), \cdots , (x_n, f(x_n)) \} \) aleshores, per tot \( x \) de l'interval \( [a,b] \) on estem interpolant existeix \( \xi \in [a,b] \) tal que 
+\begin{equation*}
+	f(x) - L_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}\omega(x) 
+\end{equation*}
+on \( \omega = (x-x_0)\cdots(x-x_n) \). En particular podem fitar l'error en la interpolació com
+\begin{equation*}
+	\abs{f(x) - L_n(x)} \leq \frac{\max_{x \in [a,b]}\abs{f^{(n+1)}(x)}}{(n+1)!}\abs{\omega(x)}.
+\end{equation*}
+Observem que l'únic que depèn de la tria de nodes és el factor \( \omega(x) \). Els nodes de Chebyshev apareixen quan intentem minimitzar \( \omega(x) \). La interpolació que hem realitzat posa de manifest la importància de fer una bona tria de nodes: amb nodes equidistants, l'error màxim en \( [-1,1] \) no tendeix a zero quan \( n \to \infty \). Interpolant amb nodes de Chebyshev això no passa. A la \cref{fig:interpolacio} hi ha representats el resultat d'interpolar \( f \) amb nodes equidistants i de Chebyshev. Quan el nombre de nodes és baix no s'aprecien grans diferències entre les dues tries, i en els dos casos el màxim error es comet a \( x = 0 \) ---en cada gràfic hi ha representat en vermell el punt on es comet el màxim error---. Per a 16 i 32 nodes, però, fent la interpolació amb nodes equidistants, l'error als extrems de l'interval es dispara i arriba a ser superior a \( 600 \) per 32 nodes. En canvi, interpolant amb els nodes de Chebyshev el comportament és molt més estable i l'error màxim és manté sempre a \( x = 0 \). 
+
+\begin{figure}[p]
+	\centering
+	\sffamily \footnotesize
+	\input{./figs/04-eq.tex}\input{./figs/04-cheb.tex}
+	\input{./figs/08-eq.tex}\input{./figs/08-cheb.tex}
+	\input{./figs/16-eq.tex}\input{./figs/16-cheb.tex}
+	\input{./figs/32-eq.tex}\input{./figs/32-cheb.tex}
+	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta)}
+	\label{fig:interpolacio}
+\end{figure}
 
 \newpage
 
@@ -268,8 +277,9 @@ El programa \texttt{prob6.c} calcula aquesta aproximació. El resultat que obten
 	\centering
 	\sffamily \footnotesize
 	\input{./figs/04-splines.tex}\input{./figs/04-cheb.tex}
-	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta)}
+	\caption{Resultat d'interpolar \( f \) fent servir interpolació per splines cúbics amb quatre nodes (esquerra) i 4 nodes de Chebyshev (dreta)}
 	\label{fig:splines}	
 \end{figure}
+
 
 \end{document}
