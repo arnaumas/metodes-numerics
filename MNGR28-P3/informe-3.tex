@@ -13,7 +13,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath,amssymb}
-\usepackage[catalan]{cleveref}
+\usepackage[catalan,sort]{cleveref}
 
 \geometry{
 	a4paper,
@@ -30,6 +30,7 @@
 }
 
 \crefname{figure}{figura}{figures}
+\crefname{table}{taula}{taules}
 \numberwithin{table}{section}
 \numberwithin{figure}{section}
 \numberwithin{equation}{section}
@@ -128,11 +129,14 @@ Observem que l'únic que depèn de la tria de nodes és el factor \( \omega(x) \
 \section{Problema 2}
 Considerem la funció de Bessel de primera espècie d'ordre zero, $J_0(x)$. Volem estimar els valors de les arrels de \( J_0 \), és a dir, de les \( x^{\ast} \) tals que \( J_0(x^{\ast}) = 0 \). Una manera de fer-ho és interpolar la inversa de \( J_0 \) a l'interval \( (1.9, 3) \). En aquest interval \( J_0 \) és localment invertible ja que és estrictament decreixent i derivable. Concretament construirem el polinomi interpolador que té per nodes \( (J_0(x_n), x_n) \). D'aquesta manera, si \( p \) és el polinomi que obtenim, \( p(0) \) és una aproximació de \( x^{\ast} \).
 
-El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el mètode de les diferències dividides de Newton a partitr d'un conjunt de nodes donats. Seguidament l'avalua al punt zero fent servir la regla de Horner. La interpolació s'ha fet de grau 1, 3 i 5 i els resultats es mostren a 
+La tria de nodes s'ha fet de tres maneres diferents. En primer lloc s'ha interpolat a partir dels nodes amb valors de \( J_0(x) \) positius i més propers al canvi de signe. Similarment s'ha interpolat a partir dels nodes amb \( J_0(x) \) negatiu i més proper al canvi de signe. I per últim s'ha interpolat prenent un nombre igual de nodes amb \( J_0(x) \) positiu i negatiu al voltant del canvi de signe.    
+
+El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el mètode de les diferències dividides de Newton a partir d'un conjunt de nodes donats. Seguidament l'avalua a \( x=0 \) fent servir la regla de Horner. La interpolació s'ha fet de grau 1, 3 i 5 --és a dir , amb 2, 4, i 6 nodes--- seguint cada un dels tres mètodes detallats anteriorment. Els resultats es mostren a les \cref{tab:Bessel positius,tab:Bessel negatius,tab:Bessel simetrics}, on també es mostra el resultat d'avaluar \( J_0 \) a l'aproximació de l'arrel per tenir una idea de com de bones són cada aproximació ---evidentment, com més proper a 0 és \( J_0(x^{\ast}) \), millor és l'aproximació---. 
 
 \begin{table}[htb]
 	\sffamily \small	\centering
-	\caption{Interpolant valors positius de $J_0(x)$ més pròxims al canvi de signe de la funció.}	
+	\caption{Aproximació de l'arrel de \( J_0 \) interpolant a partir de nodes positius propers al canvi de signe. }	
+	\label{tab:Bessel positius}
 	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
 		\toprule
 		{Grau} & { \( x^{\ast} \) } & { \( J_0(x^{\ast}) \) } \\
@@ -145,7 +149,8 @@ El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el
 
 \begin{table}[htb]
 	\sffamily \small	\centering
-	\caption{Interpolant valors negatius de $J_0(x)$ més pròxims al canvi de signe de la funció.}	
+	\caption{Aproximació de l'arrel de \( J_0 \) interpolant a partir de nodes negatius propers al canvi de signe. }	
+	\label{tab:Bessel negatius}
 	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
 		\toprule
 		{Grau} & { \( x^{\ast} \) } & { \( J_0(x^{\ast}) \) } \\
@@ -158,7 +163,8 @@ El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el
 
 \begin{table}[htb]
 	\sffamily \small	\centering
-	\caption{Interpolant valors de $J_0(x)$ simètrics al canvi de signe de la funció.}	
+	\caption{Aproximació de l'arrel de \( J_0 \) interpolant a partir de nodes simètrics al voltant del canvi de signe. }	
+	\label{tab:Bessel simetrics}
 	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
 		\toprule
 		{Grau} & { \( x^{\ast} \) } & { \( J_0(x^{\ast}) \) } \\
@@ -169,9 +175,9 @@ El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el
 	\end{tabular}
 \end{table}
 
-Observem que el millor resultat l'obtenim amb la interpolació de grau 5 de valors simètrics al voltant del canvi de signe de $J_0(x)$. En general les millors són les interpolacions amb els valors positius i amb els simètrics, i la interpolació amb valors negatius és prou dolenta en comparació.
+El millor resultat l'obtenim amb la interpolació de grau 5 a partir de valors simètrics al voltant del canvi de signe de $J_0$. En general les millors són les interpolacions amb els valors positius i amb els simètrics, i la interpolació amb valors negatius és prou dolenta en comparació.
 
-De fet ja podíem esperar des del principi que la millor interpolació fos la simètrica, ja que és l'única que en l'interval de punts interpoladors conté al $x^*$, i en general si tenim els punts interpoladors en un interval $[a,b]$ i volem avaluar el polinomi interpolador $p(x)$ en un punt fora d'aquest interval, l'error obtingut pot ser molt gran.
+De fet ja podiem esperar des del principi que la millor interpolació fos la simètrica, ja que és l'única que conté l'arrel a l'envolupant convexa dels nodes. A més, en general si tenim els nodes d'interpolació continguts en un interval $[a,b]$ i volem avaluar el polinomi interpolador $p(x)$ en un punt fora d'aquest interval l'error obtingut pot ser molt gran.
 
 \newpage
 
