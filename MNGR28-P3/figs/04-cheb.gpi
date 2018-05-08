@@ -17,6 +17,7 @@ set style line 3 linecolor rgb "blue" pointtype 2 pointsize 0.7
 set style line 4 linecolor rgb "red" linetype 0 pointtype 2 pointsize 0.7
 
 set label '$ n = 4 $' at -0.2, 0.01
+set label '\color{red} \num{0.75}' at 0.3, 0.5
 
 plot '04-avaluats.dat' using 1:2 notitle with lines linestyle 1, \
 '04-cheb-interpolats.dat' using 1:2 notitle with lines linestyle 2, \

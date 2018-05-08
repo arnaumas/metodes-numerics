@@ -17,6 +17,8 @@ set style line 3 linecolor rgb "blue" pointtype 2 pointsize 0.7
 set style line 4 linecolor rgb "red" linetype 0 pointtype 2 pointsize 0.7
 
 set label '$ n = 32 $' at -0.2, 0.01
+set label '\color{red} \num{675}' at -0.7, 0.5
+set label '\color{red} \num{675}' at 0.5, 0.5
 
 plot '32-avaluats.dat' using 1:2 notitle with lines linestyle 1, \
 '32-eq-interpolats.dat' using 1:2 notitle with lines linestyle 2, \

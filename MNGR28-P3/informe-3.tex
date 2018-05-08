@@ -83,8 +83,7 @@
 \begin{document}
 \maketitle
 
-\section{Problema 1}
-
+\section{Problema 1} \label{sec:Problema 1}
 L'objectiu d'aquest problema és interpolar la funció \( f \colon \R \to \R \) donada per
 \begin{equation*}
 	f(x) = \frac{1}{1 + 25x^2}
@@ -99,7 +98,7 @@ per \( k \in \{0, \cdots, n-1\} \). Els altres nodes que farem servir seran node
 \end{equation*}
 per \( k \in \{0, \cdots, n-1\} \). Es proposa fer la interpolació fent servir 4, 8, 16, 32 i 64 nodes. 
 
-El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner. El fitxer \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
+El programa \texttt{nodes.c} genera una llista amb \( n \) nodes equidistants o de Chebyshev. Aquesta llista serveix d'entrada per al programa \texttt{prob1.c}, que implementa el mètode de diferències dividides de Newton per a calcular els coeficients del polinomi interpolador de Lagrange per als nodes donats. A més avalua aquest polinomi aplicant la regla de Horner als 181 punts proposats i busca el màxim error comès. El fitxer \texttt{diferencies\_dividides.c} conté la implementació de funcions auxiliars per aquests programes, com el càlcul de diferències dividides fent ús de l'expressió recursiva així com una implementació de la regla de Horner per avaluar un polinomi. 
 
 \parbreak
 
@@ -120,7 +119,7 @@ Observem que l'únic que depèn de la tria de nodes és el factor \( \omega(x) \
 	\input{./figs/08-eq.tex}\input{./figs/08-cheb.tex}
 	\input{./figs/16-eq.tex}\input{./figs/16-cheb.tex}
 	\input{./figs/32-eq.tex}\input{./figs/32-cheb.tex}
-	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta)}
+	\caption{Resultat d'interpolar \( f \) fent servir \( n \) nodes equidistants (esquerra) i \( n \) nodes de Chebyshev (dreta). En vermell s'indica el màxim error comès.}
 	\label{fig:interpolacio}
 \end{figure}
 
@@ -183,33 +182,31 @@ De fet ja podiem esperar des del principi que la millor interpolació fos la sim
 
 \section{Problema 3}
 El nostre objectiu és obtenir un valor aproximat de la integral
-\begin{equation}\label{eq:integral}
+\begin{equation}\label{eq:integral 3}
 	I=\int^{1}_0\dfrac{dx}{1+x^2} = \arctan(1) - \arctan(0) = \frac{1}{4}\pi \approx \num{0.785398163397448}
 \end{equation}
 pel mètode dels trapezis i pel mètode de Simpson dividint l'interval $[0,1]$ en quatre parts iguals.
 
-El programa \texttt{prob3.c} calcula aquestes aproximacions i l'error que es comet amb cadascuna. Amb el mètode dels trapezis hem obtingut $I \approx \num{0.782794117647059}$, que comparat amb el valor exacte amb $15$ decimals de l'\cref{eq:integral} ens dóna un error aproximat de $\num{2.604045750389d-3}$.
-
-
-Amb el mètode de Simpson obtenim $I \approx \num{0.785392156862745}$, que comparat amb l'\cref{eq:integral} té un error aproximat de $\num{6.006534703d-6}$.
+El programa \texttt{prob3.c} calcula aquestes aproximacions així com una fita de l'error que es comet amb cadascuna. Fent servir el mètode dels trapezis hem obtingut $I \approx \num{0.782794117647059}$, que comparat amb el valor exacte fins a $15$ decimals de l'\cref{eq:integral 3} ens dóna un error aproximat de $\num{2.604045750389d-3}$.
+Amb el mètode de Simpson obtenim $I \approx \num{0.785392156862745}$, que comparat amb l'\cref{eq:integral 3} té un error aproximat de $\num{6.006534703d-6}$.
 
 Per tant veiem que amb la regla de Simpson hem obtingut una millor aproximació.
 
 \newpage
 
 \section{Problema 4}
-El nostre objectiu és obtenir un valor aproximat de la integral
+Volem obtenir un valor aproximat de la integral
 \begin{equation*}
 	I=\int^{5}_1 \dfrac{e^x}{x} \,dx
 \end{equation*}
-pel mètode dels trapezis dividint l'interval $[1,5]$ en $n=4, 8, 16, 32, 64$ parts iguals.
+pel mètode dels trapezis dividint l'interval $[1,5]$ en 4, 8, 16, 32 i 64 parts iguals.
 
-El programa \texttt{prob4.c} calcula aquestes aproximacions i una estimació de l'error comés. Els resultats obtinguts per a cada $n$ es mostren a la \cref{tab:resultats}. 
+El programa \texttt{prob4.c} calcula aquestes aproximacions i una estimació de l'error comés. Els resultats obtinguts per a cada $n$ es mostren a la \cref{tab:resultats 4}. 
 
 \begin{table}[h]
 	\centering \sffamily \small
 	\caption{Resultat i estimació de l'error obtingut per a cada \( n \).}	
-	\label{tab:resultats}
+	\label{tab:resultats 4}
 	\begin{tabular}{cS[table-parse-only]S[table-parse-only]}
 		\toprule
 		{ \( n \) } & {Aproximació de \( I \) } & { Estimació de l'error } \\
@@ -226,13 +223,14 @@ L'estimació de l'error l'hem calculat segons la fórmula:
 \begin{equation*}
 	\abs{\dfrac{(b-a)F}{12}h^2},
 \end{equation*}
-on $b$ i $a$ són els extrems del interval ---en el nostre cas $b=5$ i $a=1$---, $F$ és una fita superior de la segona derivada de la funció que volem integrar a l'interval, i $h=(b-a)/n$. Tenim, per tot \( x \geq 1 \) 
+on $b$ i $a$ són els extrems de l'interval ---en el nostre cas $b=5$ i $a=1$---, $F$ és una fita superior en l'interval de la segona derivada de la funció que volem integrar, i $h=(b-a)/n$ amb \( n \) el nombre de parts en les que dividim l'interval. Tenim, per tot \( x \geq 1 \) 
 \begin{equation*}
 	\frac{d^2}{dx^2}\left(\frac{e^x}{x}\right) = \dfrac{e^x(x^3-2x^2+2x)}{x^4} \leq \dfrac{e^x}{x},
 \end{equation*}
-per tant podem triar $F=e^5/5 \approx 30$. De manera que per a cada $n$ ens queda l'estimació de l'error \( 160 \cdot n^{-2} \). Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
+per tant podem, com que \( e^{x}/x \) és creixent a l'interval \( [1,5] \) podem fitar la segona derivada per $F=e^5/5 \leq 30$. De manera que per a cada $n$ ens queda que l'error està fitat per \( 160 \cdot n^{-2} \). Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
 
 \newpage
+
 \section{Problema 5}
 Volem calcular amb un error menor que $10^{-2}$ el valor de la integral
 \begin{equation*}
@@ -240,20 +238,21 @@ Volem calcular amb un error menor que $10^{-2}$ el valor de la integral
 \end{equation*}
 utilitzant la regla composta de Simpson.
 
-Una fita de l'error amb aquest mètode ve donada per:
+Una fita de l'error amb aquest mètode ve donada per
 \begin{equation*}
 	\varepsilon = \abs{\dfrac{(b-a)F}{180}h^4 } 
 \end{equation*}
-on $b$, $a$ són els extrems del interval, $F$ és una fita superior al interval del valor absolut de la quarta derivada de la funció que volem integrar, i $h=(b-a)/n$ on $n$ és el nombre de divisions del interval que utilitzem. En el nostre cas $a=1$, $b=2$, $|f^{(4)}(x)|=|-6/x^4|\leq6$ per a $x\in[1,2]$, de manera que volem
+on $b$, $a$ són els extrems del interval, $F$ és una fita superior del valor absolut de la quarta derivada de la funció que volem integrar, i $h=(b-a)/n$ on $n$ és el nombre de divisions de l'interval. En el nostre cas $a=1$, $b=2$, $|f^{(4)}(x)|=|-6/x^4|\leq6$ per a $x\in[1,2]$, de manera que volem
 \begin{equation*}
-	10^{-2} \geq \abs{\frac{6}{180} \dfrac{1}{n^4}}. 
+	\abs{\frac{6}{180} \dfrac{1}{n^4}} \leq 10^{-2} 
 \end{equation*}
-Per tant necessitarem fer com a mínim $n=2$ divisions del interval $[1,2]$ per a obtenir la precisió demanada.
+Per tant necessitarem fer com a mínim $n=2$ divisions de l'interval $[1,2]$ per obtenir la precisió demanada.
 
-El programa \texttt{prob5.c} calcula aquesta integral amb diversos valors per a $n$, els resultats obtinguts són els següents:
+El programa \texttt{prob5.c} calcula aquesta integral amb diversos valors de $n$. Els resultats es mostren a la \cref{tab:resultats 5}.
 \begin{table}[htb]
-	\centering
+	\centering \small \sffamily
 	\caption{Resultats per a diversos $n$ parells}	
+\label{tab:resultats 5}
 	\begin{tabular}{cS[table-parse-only]}
 		\toprule
 		{ \( n \) } & {Aproximació de \( I \) } \\
@@ -263,29 +262,60 @@ El programa \texttt{prob5.c} calcula aquesta integral amb diversos valors per a 
 		6 & 0.386287163278802 \\
 		8 & 0.386292043466313 \\
 	\end{tabular}
-\end{table}\\
+\end{table}
+
 Observem que amb $n=2$ iteracions ja hem obtingut dues xifres decimals correctes, per tant la nostra estimació de l'error ha sigut adequada.
 
 \newpage
 
 \section{Problema 6}
-En aquest problema se'ns dóna una sèrie de valors de temps i velocitat, i se'ns demana calcular l'espai recorregut. Volem doncs aproximar la integral:
+En aquest problema se'ns demana de calcular una aproximació de la distància recorreguda per un automòbil a partir d'un conjunt finit de valors de la seva velocitat a certs instants de temps. En concret volem aproximar la integral
 \begin{equation*}
-	L=\int_{0}^{84}v(t)dt,
+	L=\int_{0}^{84}v(t) \, dt,
 \end{equation*}
-per a la qual tenim valors discrets de $v(t)$ en intervals de temps de \SI{6}{s}. Per tant estem dividint l'interval $[0,84]$ en $n=14$ parts iguals. Per a trobar $L$ utilitzarem la regla de Simpson composta, ja que en general dóna un millor resultat que la regla composta dels trapezis. 
+tenint només valors de \( v(t) \) cada \SI{6}{s}. Per tant estem dividint l'interval $[0,84]$ en $n=14$ parts iguals. Per a trobar $L$ utilitzarem la regla de Simpson composta, ja que en general dóna un millor resultat que la regla dels trapezis composta. 
 
-El programa \texttt{prob6.c} calcula aquesta aproximació. El resultat que obtenim és \( L = \SI{2909.400000000000091}{m} \), per tant la pista mesura aproximadament \SI{2909}{km}.
+El programa \texttt{prob6.c} calcula aquesta aproximació. El resultat que obtenim és \( L = \SI{2909.400000000000091}{m} \), per tant la pista mesura aproximadament \SI{2.909}{km}.
 
 \newpage
 \section{Problema 7}
-\begin{figure}[htb]
+\begin{figure}[b]
 	\centering
 	\sffamily \footnotesize
 	\input{./figs/04-splines.tex}\input{./figs/04-cheb.tex}
-	\caption{Resultat d'interpolar \( f \) fent servir interpolació per splines cúbics amb quatre nodes (esquerra) i 4 nodes de Chebyshev (dreta)}
+	\caption{Resultat d'interpolar \( f \) fent servir interpolació per splines cúbics amb quatre nodes (esquerra) i 4 nodes de Chebyshev (dreta). En vermell s'indica el màxim error comès.}
 	\label{fig:splines}	
 \end{figure}
 
+Una altra manera d'interpolar funcions que és més estable quan el nombre de nodes creix és a partir de splines. En lloc de construir un polinomi de grau molt alt es construeixen molts polinomis de grau baix ---els splines solen ser cúbics--- imposant condicions de regularitat als nodes. Concretament hem fet servir splines cúbics amb condicions d'extrem naturals, és a dir, imposant
+\begin{equation*}
+	s_0''(x_0) = s_n''(x_n) = 0,
+\end{equation*}
+on denotarem per \( s_i \) l'spline \( i \)-èssim. Podem escriure
+\begin{equation*}
+	s_i = a_{i0} + a_{i1}(x-x_i) + a_{i2}(x-x)^2 + a_{i3}(x-x_i)^3.
+\end{equation*}
+Per tant hem de calcular els coeficients \( a_{ij} \). La manera estàndard de procedir és considerar els anomenats moments, \( M_i \defeq s_i''(x_i) \), que són la solució d'un sistema lineal que només involucra els nodes d'interpolació \( \{(x_i,f(x_i)\} \). A partir dels moments podem reconstruir la resta de coeficients com
+\begin{equation} \label{eq:coeficients splines}
+\begin{aligned}
+	a_{i0} & = f(x_i) \\
+	a_{i1} & = \frac{f(x_{i+1}) - f(x_i)}{x_{i+1} - x_i} - \frac{2M_{i+1} + M_i}{6}(x_{i+1} - x_i) \\
+	a_{i2} & = \frac{M_i}{2} \\
+	a_{i3} & = \frac{M_{i+1} - M_i}{6(x_{i+1} - x_i)}
+\end{aligned} 
+\end{equation}
+
+\parbreak
+
+Per aproximar \( f \) definida com al problema \ref{sec:Problema 1} amb quatre splines cúbics primer hem resolt el sistema que determina els moments fent servir 4 nodes de Chebyshev mitjançant \textsf{SageMath} i hem obtingut 
+\begin{equation*}
+\begin{aligned}
+	M_0 = M_3 &= 0 \\
+	M_1 = M_2 &= \num{-0.557114}.
+\end{aligned}
+\end{equation*}
+El programa \texttt{prob7.c} llegeix la llista de nodes i de moments i implementa els càlculs de l'\cref{eq:coeficients splines}. Fet això, avalua els splines als 181 punts proposats al problema \ref{sec:Problema 1} i busca l'error màxim comès a la interpolació. El resultat, així com la mateixa interpolació fent servir diferències dividides amb quatre nodes de Chebyshev es mostra a la \cref{fig:splines}. 
+
+Tal i com podem apreciar, la diferència entre ambdós mètodes és petita. En part és perquè 4 és un nombre més aviat petit de nodes, a partir dels quals es pot extreure poca informació sobre la funció a interpolar. En particular, en aquest cas no estem donant pràcticament cap tipus d'informació sobre el comportament de \( f \) al voltant del 0. Per a realitzar la interpolació amb un nombre arbitrari d'splines caldria un programa que resolvés el sistema que determina els moments, per al qual encara no disposem d'eines. Així doncs no hem pogut fer la interpolació amb splines per a nombres elevats de nodes. Tot i així és raonable concloure que fer servir diferències dividides amb els nodes de Chebyshev és molt més eficient que no pas fer servir splines, ja que no involucra la resolució d'un sistema i només requereix de \( n+1 \) coeficients, en contra dels \( 4(n - 1) \) coeficients necessaris pels splines.
 
 \end{document}
