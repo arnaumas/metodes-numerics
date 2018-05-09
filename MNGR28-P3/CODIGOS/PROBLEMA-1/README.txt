@@ -1,4 +1,4 @@
-Per a compilar cada programa es pot esecutar 'make <Nom del programa>' o també 'make all' per compilar tots els programes alhora.
+Per a compilar cada programa es pot executar 'make <Nom del programa>' o també 'make all' per compilar tots els programes alhora.
 
 El programa 'nodes' genera una llista de n nodes equidistants o de Chebyshev a l'interval [-1,1]. Requereix dos arguments: el primer és 'cheb' o 'eq' segons si volem nodes de Chebyshev o equidistants i el segon és el nombre de nodes. La sortida del programa es guarda en un fitxer de nom 'n-<tipus>.dat', on <tipus> és 'cheb' o 'eq' segons sigui el cas. Si, per exemple, volem 8 nodes de Chebyshev hem de fer 
 	> make nodes
