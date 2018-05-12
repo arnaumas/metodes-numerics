@@ -1,0 +1,25 @@
+set terminal epslatex size 8cm,5cm color colortext 
+set output '04-eq.tex'
+set size ratio -1
+
+set format '\num{%g}'
+set border linewidth 1.5
+
+set tics scale 0.75
+set xrange [-1.1:1.1]
+set xtics 0.5
+set yrange [-0.25:1.25]
+set ytics 0.25
+
+set style line 1 linecolor rgb "orange-red"
+set style line 2 linecolor rgb "green"
+set style line 3 linecolor rgb "blue" pointtype 2 pointsize 0.7
+set style line 4 linecolor rgb "red" linetype 0 pointtype 2 pointsize 0.7
+
+set label '$ n = 4 $' at -0.2, 0.01
+set label '\color{red} \num{0.71}' at 0.3, 0.5
+
+plot '04-avaluats.dat' using 1:2 notitle with lines linestyle 1, \
+'04-eq-interpolats.dat' using 1:2 notitle with lines linestyle 2, \
+'04-eq.dat' using 1:2 notitle with points linestyle 3, \
+'04-eq-error.dat' using 1:2 notitle with linespoints linestyle 4
