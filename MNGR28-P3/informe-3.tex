@@ -13,6 +13,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath,amssymb}
+\usepackage{mathtools}
 \usepackage[catalan,sort]{cleveref}
 
 \geometry{
@@ -50,6 +51,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \newcommand{\parbreak}{
 	\begin{center}
 		--- $\ast$ ---
@@ -108,7 +110,7 @@ Per a tenir una idea del màxim error que es comet en cada cas hem avaluat tant 
 \end{equation*}
 on \( \omega = (x-x_0)\cdots(x-x_n) \). En particular podem fitar l'error en la interpolació com
 \begin{equation*}
-	\abs{f(x) - L_n(x)} \leq \frac{\max_{x \in [a,b]}\abs{f^{(n+1)}(x)}}{(n+1)!}\abs{\omega(x)}.
+	\abs{f(x) - L_n(x)} \leqslant \frac{\max_{x \in [a,b]}\abs{f^{(n+1)}(x)}}{(n+1)!}\abs{\omega(x)}.
 \end{equation*}
 Observem que l'únic que depèn de la tria de nodes és el factor \( \omega(x) \). Els nodes de Chebyshev apareixen quan intentem minimitzar \( \omega(x) \). La interpolació que hem realitzat posa de manifest la importància de fer una bona tria de nodes: amb nodes equidistants, l'error màxim en \( [-1,1] \) no tendeix a zero quan \( n \to \infty \). Interpolant amb nodes de Chebyshev això no passa. A la \cref{fig:interpolacio} hi ha representats el resultat d'interpolar \( f \) amb nodes equidistants i de Chebyshev. Quan el nombre de nodes és baix no s'aprecien grans diferències entre les dues tries, i en els dos casos el màxim error es comet a \( x = 0 \) ---en cada gràfic hi ha representat en vermell el punt on es comet el màxim error---. Per a 16 i 32 nodes, però, fent la interpolació amb nodes equidistants, l'error als extrems de l'interval es dispara i arriba a ser superior a \( 600 \) per 32 nodes. En canvi, interpolant amb els nodes de Chebyshev el comportament és molt més estable i l'error màxim és manté sempre a \( x = 0 \). 
 
@@ -143,6 +145,7 @@ El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el
 		1 & 2.404728613882804 & 5.03291522479392d-5\\
 		3 & 2.404822718113948 & 1.47416266795862d-6\\
 		5 & 2.404825294785460 & 1.36489238329446d-7\\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
@@ -157,6 +160,7 @@ El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el
 		1 & 2.400077241947102 & 2.46750381340249d-3\\
 		3 & 2.404149375353531 & 3.51087705194527d-4\\
 		5 & 2.404216734868258 & 3.16108843546827d-4\\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
@@ -171,6 +175,7 @@ El programa \texttt{prob2.c} calcula el polinomi interpolador de Lagrange amb el
 		1 & 2.404927513002775 & -5.29287203952310d-5\\
 		3 & 2.404824021911155 & 7.97298995297100d-8\\
 		5 & 2.404825653043717 & -4.94996456864148d-8\\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
@@ -216,6 +221,7 @@ El programa \texttt{prob4.c} calcula aquestes aproximacions i una estimació de 
 		16 & 38.413711363539406 & 0.625\\
 		32 & 38.321069162332130 & 0.15625\\
 		64 & 38.297886904128802 & 0.0390625\\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
@@ -223,11 +229,11 @@ L'estimació de l'error l'hem calculat segons la fórmula:
 \begin{equation*}
 	\abs{\dfrac{(b-a)F}{12}h^2},
 \end{equation*}
-on $b$ i $a$ són els extrems de l'interval ---en el nostre cas $b=5$ i $a=1$---, $F$ és una fita superior en l'interval de la segona derivada de la funció que volem integrar, i $h=(b-a)/n$ amb \( n \) el nombre de parts en les que dividim l'interval. Tenim, per tot \( x \geq 1 \) 
+on $b$ i $a$ són els extrems de l'interval ---en el nostre cas $b=5$ i $a=1$---, $F$ és una fita superior en l'interval de la segona derivada de la funció que volem integrar, i $h=(b-a)/n$ amb \( n \) el nombre de parts en les que dividim l'interval. Tenim, per tot \( x \geqslant 1 \) 
 \begin{equation*}
-	\frac{d^2}{dx^2}\left(\frac{e^x}{x}\right) = \dfrac{e^x(x^3-2x^2+2x)}{x^4} \leq \dfrac{e^x}{x},
+	\frac{d^2}{dx^2}\left(\frac{e^x}{x}\right) = \dfrac{e^x(x^3-2x^2+2x)}{x^4} \leqslant \dfrac{e^x}{x},
 \end{equation*}
-per tant, com que \( e^{x}/x \) és creixent a l'interval \( [1,5] \) podem fitar la segona derivada per $F=e^5/5 \leq 30$. De manera que per a cada $n$ ens queda que l'error està fitat per \( 160 \cdot n^{-2} \). Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
+per tant, com que \( e^{x}/x \) és creixent a l'interval \( [1,5] \) podem fitar la segona derivada per $F=e^5/5 \leqslant 30$. De manera que per a cada $n$ ens queda que l'error està fitat per \( 160  n^{-2} \). Observem que per a un major nombre de divisions del interval esperem millorar l'aproximació de $I$.
 
 \newpage
 
@@ -242,9 +248,9 @@ Una fita de l'error amb aquest mètode ve donada per
 \begin{equation*}
 	\varepsilon = \abs{\dfrac{(b-a)F}{180}h^4 } 
 \end{equation*}
-on $b$, $a$ són els extrems del interval, $F$ és una fita superior del valor absolut de la quarta derivada de la funció que volem integrar, i $h=(b-a)/n$ on $n$ és el nombre de divisions de l'interval. En el nostre cas $a=1$, $b=2$, $|f^{(4)}(x)|=|-6/x^4|\leq6$ per a $x\in[1,2]$, de manera que volem
+on $b$, $a$ són els extrems del interval, $F$ és una fita superior del valor absolut de la quarta derivada de la funció que volem integrar, i $h=(b-a)/n$ on $n$ és el nombre de divisions de l'interval. En el nostre cas $a=1$, $b=2$, $|f^{(4)}(x)|=|-6/x^4|\leqslant 6$ per a $x\in[1,2]$, de manera que volem
 \begin{equation*}
-	\abs{\frac{6}{180} \dfrac{1}{n^4}} \leq 10^{-2} 
+	\abs{\frac{6}{180} \dfrac{1}{n^4}} \leqslant 10^{-2} 
 \end{equation*}
 Per tant necessitarem fer com a mínim $n=2$ divisions de l'interval $[1,2]$ per obtenir la precisió demanada.
 
@@ -252,7 +258,7 @@ El programa \texttt{prob5.c} calcula aquesta integral amb diversos valors de $n$
 \begin{table}[htb]
 	\centering \small \sffamily
 	\caption{Resultats per a diversos $n$ parells}	
-\label{tab:resultats 5}
+	\label{tab:resultats 5}
 	\begin{tabular}{cS[table-parse-only]}
 		\toprule
 		{ \( n \) } & {Aproximació de \( I \) } \\
@@ -267,10 +273,11 @@ El programa \texttt{prob5.c} calcula aquesta integral amb diversos valors de $n$
 		16 & 0.386294213675793 \\
 		18 & 0.386294268953807 \\
 		20 & 0.386294300594357 \\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
-Observem que amb $n=2$ iteracions ja hem obtingut dues xifres decimals correctes, per tant la nostra estimació de l'error ha sigut adequada. Si volem garantir un error menor que $10^{-4}$ necessitem $n\geqslant ceil\sqrt[4]{10^4/30}=19$ i com $n$ ha de ser parell $n=20$.
+Observem que amb $n=2$ iteracions ja hem obtingut dues xifres decimals correctes, per tant la nostra estimació de l'error ha sigut adequada. Si volem garantir un error menor que $10^{-4}$ necessitem $n \geqslant \ceil[\Big]{\sqrt[4]{10^4/30}\,} = 19$ i com que $n$ ha de ser parell $n=20$.
 
 \newpage
 
@@ -303,22 +310,22 @@ on denotarem per \( s_i \) l'spline \( i \)-èssim. Podem escriure
 \end{equation*}
 Per tant hem de calcular els coeficients \( a_{ij} \). La manera estàndard de procedir és considerar els anomenats moments, \( M_i \defeq s_i''(x_i) \), que són la solució d'un sistema lineal que només involucra els nodes d'interpolació \( \{(x_i,f(x_i)\} \). A partir dels moments podem reconstruir la resta de coeficients com
 \begin{equation} \label{eq:coeficients splines}
-\begin{aligned}
-	a_{i0} & = f(x_i) \\
-	a_{i1} & = \frac{f(x_{i+1}) - f(x_i)}{x_{i+1} - x_i} - \frac{2M_{i+1} + M_i}{6}(x_{i+1} - x_i) \\
-	a_{i2} & = \frac{M_i}{2} \\
-	a_{i3} & = \frac{M_{i+1} - M_i}{6(x_{i+1} - x_i)}
-\end{aligned} 
+	\begin{aligned}
+		a_{i0} & = f(x_i) \\
+		a_{i1} & = \frac{f(x_{i+1}) - f(x_i)}{x_{i+1} - x_i} - \frac{2M_{i+1} + M_i}{6}(x_{i+1} - x_i) \\
+		a_{i2} & = \frac{M_i}{2} \\
+		a_{i3} & = \frac{M_{i+1} - M_i}{6(x_{i+1} - x_i)}
+	\end{aligned} 
 \end{equation}
 
 \parbreak
 
 Per aproximar \( f \) definida com al problema \ref{sec:Problema 1} amb quatre splines cúbics primer hem resolt el sistema que determina els moments fent servir 4 nodes de Chebyshev mitjançant \textsf{SageMath} i hem obtingut 
 \begin{equation*}
-\begin{aligned}
-	M_0 = M_3 &= 0 \\
-	M_1 = M_2 &= \num{-0.557114}.
-\end{aligned}
+	\begin{aligned}
+		M_0 = M_3 &= 0 \\
+		M_1 = M_2 &= \num{-0.557114}.
+	\end{aligned}
 \end{equation*}
 El programa \texttt{prob7.c} llegeix la llista de nodes i de moments i implementa els càlculs de l'\cref{eq:coeficients splines}. Fet això, avalua els splines als 181 punts proposats al problema \ref{sec:Problema 1} i busca l'error màxim comès a la interpolació. El resultat, així com la mateixa interpolació fent servir diferències dividides amb quatre nodes de Chebyshev es mostra a la \cref{fig:splines}. 
 
